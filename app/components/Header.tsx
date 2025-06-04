@@ -108,11 +108,11 @@ const Header = () => {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
             <Image
-              src="tohatsu.png"
+              src="/tohatsu.png"
               alt="توهاتسو السعودية"
-              width={50}
-              height={38}
-              className="h-8 sm:h-10 w-auto"
+              width={120}
+              height={80}
+              className="h-12 sm:h-16 lg:h-20 w-auto"
             />
           </Link>
           
