@@ -541,21 +541,21 @@ export default function HomePage() {
                   title: "المحركات المحمولة (2.5-20 حصان)",
                   description: "القوة المدمجة، المرونة المطلقة. مثالية للقوارب الصغيرة وسهولة التنقل مع تصميم خفيف الوزن.",
                   image: "hero/twofive.webp",
-                  href: "/portable-engines",
+                  href: "/products/portable-engines",
                   gradient: "from-[#181b39] to-[#181b39]/80"
                 },
                 {
                   title: "المحركات المتوسطة (25-90 حصان)",
                   description: "الأداء المثالي لمغامراتك المتنوعة. توازن مثالي بين القوة والكفاءة للاستخدامات المتعددة.",
                   image: "hero/ni.webp",
-                  href: "/mid-range-engines",
+                  href: "/products/mid-range-engines",
                   gradient: "from-[#c2b280] to-[#c2b280]/80"
                 },
                 {
                   title: "المحركات عالية القوة (100-140 حصان)",
                   description: "قوة استثنائية لأكبر تحدياتك. أداء لا يتنازل للقوارب الأكبر والمغامرات الأكثر جرأة.",
                   image: "hero/hund.webp",
-                  href: "/high-power-engines",
+                  href: "/products/high-power-engines",
                   gradient: "from-slate-700 to-slate-800"
                 }
               ].map((category, index) => (
