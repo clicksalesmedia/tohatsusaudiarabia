@@ -5,13 +5,6 @@
   --foreground: #171717;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -22,5 +15,115 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-noto-kufi-arabic), Arial, Helvetica, sans-serif;
+}
+
+/* Global RTL Support */
+html[dir="rtl"], 
+[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+  font-family: var(--font-noto-kufi-arabic), 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', sans-serif !important;
+}
+
+html[dir="rtl"] *,
+[dir="rtl"] * {
+  font-family: var(--font-noto-kufi-arabic), 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', sans-serif !important;
+}
+
+/* Ensure proper font loading */
+.font-sans {
+  font-family: var(--font-noto-kufi-arabic), ui-sans-serif, system-ui, sans-serif !important;
+}
+
+/* Custom scrollbar for RTL */
+[dir="rtl"]::-webkit-scrollbar {
+  width: 8px;
+}
+
+[dir="rtl"]::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+[dir="rtl"]::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #0077CC, #003366);
+  border-radius: 10px;
+}
+
+[dir="rtl"]::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #0099FF, #0077CC);
+}
+
+/* Arabic Typography Enhancements */
+.font-arabic {
+  font-family: var(--font-noto-kufi-arabic), sans-serif;
+  font-feature-settings: 'liga' 1, 'kern' 1;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Enhanced spacing for Arabic text */
+.arabic-text-spacing {
+  letter-spacing: 0.025em;
+  word-spacing: 0.05em;
+  line-height: 1.8;
+}
+
+/* Custom animations for Arabic content */
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translate3d(30px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translate3d(-30px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-fade-in-right {
+  animation: fadeInRight 0.6s ease-out;
+}
+
+.animate-fade-in-left {
+  animation: fadeInLeft 0.6s ease-out;
+}
+
+/* Text selection styling */
+::selection {
+  background-color: rgba(0, 119, 204, 0.3);
+  color: #003366;
+}
+
+::-moz-selection {
+  background-color: rgba(0, 119, 204, 0.3);
+  color: #003366;
+}
+
+/* Enhanced focus indicators for keyboard navigation */
+.keyboard-focus:focus-visible {
+  outline: 2px solid #0077CC;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
