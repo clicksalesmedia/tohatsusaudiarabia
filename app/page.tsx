@@ -5,6 +5,8 @@ import { useRef, useState, useEffect } from 'react'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import { useParticles } from './utils/particlePositions'
+import { useLanguage } from './contexts/LanguageContext'
+import { useTranslations } from './translations'
 import { 
   ArrowRightIcon,
   ShieldCheckIcon,
@@ -46,6 +48,8 @@ const scaleOnHover = {
 export default function HomePage() {
   const heroRef = useRef(null)
   const isHeroInView = useInView(heroRef, { once: true })
+  const { language, isRTL } = useLanguage()
+  const t = useTranslations(language)
   
   // Use consistent particle positions
   const heroParticles = useParticles(12, 'hero-section')
@@ -59,27 +63,27 @@ export default function HomePage() {
     {
       url: "/hero/hero1.webp",
       alt: "Tohatsu Marine Engine on Ocean",
-      title: "قوة لا تُقهر في المياه المفتوحة"
+      title: t.heroSlides.slide1
     },
     {
       url: "/hero/hero2.jpg",
       alt: "Fishing Boat with Tohatsu Engine",
-      title: "مثالي لرحلات الصيد والمغامرات"
+      title: t.heroSlides.slide2
     },
     {
       url: "/hero/hero3.jpg",
       alt: "High Speed Boat with Tohatsu",
-      title: "الأداء العالي للقوارب الرياضية"
+      title: t.heroSlides.slide3
     },
     {
       url: "/hero/hero4.jpg",
       alt: "Family Boating with Tohatsu",
-      title: "لحظات عائلية لا تُنسى"
+      title: t.heroSlides.slide4
     },
     {
       url: "/hero/hero5.jpg",
       alt: "Luxury Yacht with Tohatsu Engine",
-      title: "الفخامة تلتقي بالموثوقية"
+      title: t.heroSlides.slide5
     }
   ]
 
@@ -113,7 +117,7 @@ export default function HomePage() {
   }
 
   return (
-    <div dir="rtl" className="font-sans">
+    <div dir={isRTL ? "rtl" : "ltr"} className="font-sans">
       <Header />
 
       {/* Main Content */}
@@ -125,7 +129,7 @@ export default function HomePage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
-          dir="rtl"
+          dir={isRTL ? "rtl" : "ltr"}
         >
           {/* Enhanced Background Image Slider */}
           <div className="absolute inset-0">
@@ -281,12 +285,12 @@ export default function HomePage() {
                 <div className="absolute bottom-0 right-0 w-16 h-16 bg-gradient-to-tl from-[#c2b280]/15 to-transparent rounded-tl-3xl" />
                 
                 <motion.h1 
-                  className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold mb-4 sm:mb-6 leading-tight text-right relative z-10"
+                  className={`text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold mb-4 sm:mb-6 leading-tight ${isRTL ? 'text-right' : 'text-left'} relative z-10`}
                   initial={{ y: 30, opacity: 0 }}
                   animate={isHeroInView ? { y: 0, opacity: 1 } : {}}
                   transition={{ delay: 0.3, duration: 1 }}
                 >
-                  <span className="block mb-2 text-white/90">مرحباً بك في عالم</span>
+                  <span className="block mb-2 text-white/90">{t.hero.subtitle}</span>
                   <motion.span 
                     className="text-transparent bg-clip-text bg-gradient-to-l from-[#c2b280] via-[#d4c794] to-[#c2b280] relative inline-block"
                     animate={{ 
@@ -295,7 +299,7 @@ export default function HomePage() {
                     transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
                     style={{ backgroundSize: "200% 100%" }}
                   >
-                    توهاتسو السعودية
+                    {t.hero.title}
                     {/* Subtle glow effect */}
                     <div className="absolute inset-0 bg-gradient-to-l from-[#c2b280]/30 via-[#d4c794]/30 to-[#c2b280]/30 blur-lg -z-10" />
                   </motion.span>
@@ -310,7 +314,7 @@ export default function HomePage() {
                   exit={{ y: -20, opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.8, ease: "easeOut" }}
                 >
-                  <p className="text-lg sm:text-xl lg:text-2xl font-semibold leading-relaxed text-[#c2b280] text-right mb-3">
+                  <p className={`text-lg sm:text-xl lg:text-2xl font-semibold leading-relaxed text-[#c2b280] ${isRTL ? 'text-right' : 'text-left'} mb-3`}>
                     {heroImages[currentSlide].title}
                   </p>
                   
@@ -323,26 +327,25 @@ export default function HomePage() {
                 </motion.div>
               
                 <motion.p 
-                  className="text-sm sm:text-base lg:text-lg mb-6 sm:mb-8 leading-relaxed opacity-90 text-right relative z-10 font-light text-white/90"
+                  className={`text-sm sm:text-base lg:text-lg mb-6 sm:mb-8 leading-relaxed opacity-90 ${isRTL ? 'text-right' : 'text-left'} relative z-10 font-light text-white/90`}
                   initial={{ y: 20, opacity: 0 }}
                   animate={isHeroInView ? { y: 0, opacity: 0.9 } : {}}
                   transition={{ delay: 0.6, duration: 1 }}
                 >
-                  حيث تلتقي الجودة اليابانية بالبحر الأحمر. اكتشف محركات القوارب الخارجية 
-                  التي تقدم لك الأداء الذي لا مثيل له والاعتمادية التي تدوم.
+                  {t.hero.description}
                 </motion.p>
                 
                 {/* Compact feature badges */}
                 <motion.div
-                  className="flex flex-wrap justify-end gap-2 sm:gap-3 mb-6 sm:mb-8 relative z-10"
+                  className={`flex flex-wrap ${isRTL ? 'justify-end' : 'justify-start'} gap-2 sm:gap-3 mb-6 sm:mb-8 relative z-10`}
                   initial={{ y: 20, opacity: 0 }}
                   animate={isHeroInView ? { y: 0, opacity: 1 } : {}}
                   transition={{ delay: 0.8, duration: 1 }}
                 >
                   {[
-                    { icon: "🚀", text: "قوة متوازنة" },
-                    { icon: "⚡", text: "كفاءة عالية" },
-                    { icon: "🛡️", text: "موثوقية يابانية" }
+                    { icon: "🚀", text: t.badges.power },
+                    { icon: "⚡", text: t.badges.efficiency },
+                    { icon: "🛡️", text: t.badges.reliability }
                   ].map((badge, index) => (
                     <motion.div
                       key={index}
@@ -360,14 +363,14 @@ export default function HomePage() {
                 
                 {/* Enhanced CTA Button */}
                 <motion.div
-                  className="relative z-10 text-right"
+                  className={`relative z-10 ${isRTL ? 'text-right' : 'text-left'}`}
                   initial={{ y: 20, opacity: 0 }}
                   animate={isHeroInView ? { y: 0, opacity: 1 } : {}}
                   transition={{ delay: 1.2, duration: 1 }}
                 >
                   <motion.a
                     href="/products"
-                    className="group relative bg-gradient-to-l from-[#c2b280] via-[#d4c794] to-[#c2b280] hover:from-[#d4c794] hover:via-[#c2b280] hover:to-[#d4c794] text-[#181b39] font-bold py-3 sm:py-4 px-6 sm:px-8 lg:px-10 rounded-xl text-base sm:text-lg transition-all duration-500 inline-flex items-center shadow-2xl border border-[#c2b280]/30 overflow-hidden"
+                    className={`group relative bg-gradient-to-l from-[#c2b280] via-[#d4c794] to-[#c2b280] hover:from-[#d4c794] hover:via-[#c2b280] hover:to-[#d4c794] text-[#181b39] font-bold py-3 sm:py-4 px-6 sm:px-8 lg:px-10 rounded-xl text-base sm:text-lg transition-all duration-500 inline-flex items-center shadow-2xl border border-[#c2b280]/30 overflow-hidden ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.98 }}
                     style={{ backgroundSize: "200% 100%" }}
@@ -379,17 +382,19 @@ export default function HomePage() {
                     {/* Button glow effect */}
                     <div className="absolute inset-0 bg-gradient-to-l from-[#c2b280]/20 to-[#d4c794]/20 blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     
+                    {/* Arrow positioned correctly for RTL/LTR */}
                     <motion.div
-                      className="mr-2 sm:mr-3 relative z-10"
-                      animate={{ x: [0, -6, 0] }}
+                      className={`${isRTL ? 'ml-2 sm:ml-3' : 'mr-2 sm:mr-3'} relative z-10`}
+                      animate={{ x: isRTL ? [0, -4, 0] : [0, 4, 0] }}
                       transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                     >
-                      <ArrowRightIcon className="w-5 h-5 sm:w-6 sm:h-6 group-hover:scale-110 transition-transform duration-300" />
+                      <ArrowRightIcon className={`w-5 h-5 sm:w-6 sm:h-6 group-hover:scale-110 transition-transform duration-300 ${isRTL ? 'rotate-180' : ''}`} />
                     </motion.div>
-                    <span className="relative z-10">استكشف مجموعتنا</span>
+                    
+                    <span className="relative z-10">{t.hero.learnMore}</span>
                     
                     {/* Shimmer effect */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                    <div className={`absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 ${isRTL ? 'translate-x-full group-hover:-translate-x-full' : '-translate-x-full group-hover:translate-x-full'}`} />
                   </motion.a>
                 </motion.div>
               </div>
@@ -404,7 +409,7 @@ export default function HomePage() {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          dir="rtl"
+          dir={isRTL ? "rtl" : "ltr"}
         >
           {/* Subtle background pattern */}
           <div className="absolute inset-0 opacity-5">
@@ -438,7 +443,7 @@ export default function HomePage() {
                   <SparklesIcon className="w-12 h-12 text-[#c2b280]" />
                 </motion.div>
                 <h2 className="text-4xl md:text-5xl font-bold text-[#181b39]">
-                  لماذا تختار توهاتسو؟
+                  {t.whyTohatsu.title}
                 </h2>
               </motion.div>
             </motion.div>
@@ -453,20 +458,20 @@ export default function HomePage() {
               {[
                 {
                   icon: ShieldCheckIcon,
-                  title: "اعتمادية لا تتزعزع",
-                  description: "صممت لتواجه أقسى الظروف البحرية مع ضمان الأداء المستمر.",
+                  title: t.whyTohatsu.reliability.title,
+                  description: t.whyTohatsu.reliability.description,
                   color: "from-[#181b39] to-[#181b39]/80"
                 },
                 {
                   icon: GlobeAltIcon,
-                  title: "كفاءة استثنائية في استهلاك الوقود",
-                  description: "رحلات أطول بتكلفة أقل مع تقنيات توفير الوقود المتقدمة.",
+                  title: t.whyTohatsu.fuelEfficiency.title,
+                  description: t.whyTohatsu.fuelEfficiency.description,
                   color: "from-[#c2b280] to-[#c2b280]/80"
                 },
                 {
                   icon: TrophyIcon,
-                  title: "قوة يابانية، قيمة في متناول اليد",
-                  description: "جودة عالمية معترف بها مع دعم محلي موثوق ومتاح دائماً.",
+                  title: t.whyTohatsu.value.title,
+                  description: t.whyTohatsu.value.description,
                   color: "from-slate-600 to-slate-700"
                 }
               ].map((item, index) => (
@@ -505,7 +510,7 @@ export default function HomePage() {
               viewport={{ once: true }}
             >
               <p className="text-2xl text-[#181b39] font-bold italic bg-gradient-to-l from-[#c2b280] to-[#c2b280]/80 bg-clip-text text-transparent">
-                &ldquo;انطلق بثقة، انطلق مع توهاتسو.&rdquo;
+                &ldquo;{t.whyTohatsu.quote}&rdquo;
               </p>
             </motion.div>
           </div>
@@ -526,7 +531,7 @@ export default function HomePage() {
               className="text-4xl md:text-5xl font-bold text-center text-[#181b39] mb-16"
               {...fadeInUp}
             >
-              استكشف مجموعتنا من المحركات
+              {t.categories.title}
             </motion.h2>
             
             <motion.div 
@@ -538,22 +543,22 @@ export default function HomePage() {
             >
               {[
                 {
-                  title: "المحركات المحمولة (2.5-20 حصان)",
-                  description: "القوة المدمجة، المرونة المطلقة. مثالية للقوارب الصغيرة وسهولة التنقل مع تصميم خفيف الوزن.",
+                  title: t.categories.portable.title,
+                  description: t.categories.portable.description,
                   image: "hero/twofive.webp",
                   href: "/products/portable-engines",
                   gradient: "from-[#181b39] to-[#181b39]/80"
                 },
                 {
-                  title: "المحركات المتوسطة (25-90 حصان)",
-                  description: "الأداء المثالي لمغامراتك المتنوعة. توازن مثالي بين القوة والكفاءة للاستخدامات المتعددة.",
+                  title: t.categories.midRange.title,
+                  description: t.categories.midRange.description,
                   image: "hero/ni.webp",
                   href: "/products/mid-range-engines",
                   gradient: "from-[#c2b280] to-[#c2b280]/80"
                 },
                 {
-                  title: "المحركات عالية القوة (100-140 حصان)",
-                  description: "قوة استثنائية لأكبر تحدياتك. أداء لا يتنازل للقوارب الأكبر والمغامرات الأكثر جرأة.",
+                  title: t.categories.highPower.title,
+                  description: t.categories.highPower.description,
                   image: "hero/hund.webp",
                   href: "/products/high-power-engines",
                   gradient: "from-slate-700 to-slate-800"
@@ -584,7 +589,7 @@ export default function HomePage() {
                     </div>
                   </div>
                   
-                  <div className="p-8 text-right">
+                  <div className={`p-8 ${isRTL ? 'text-right' : 'text-left'}`}>
                     <h3 className="text-2xl font-bold text-[#181b39] mb-4 group-hover:text-[#181b39]/80 transition-colors duration-300">
                       {category.title}
                     </h3>
@@ -598,11 +603,11 @@ export default function HomePage() {
                       whileTap={{ scale: 0.95 }}
                     >
                       <motion.div
-                        className="ml-2 group-hover/btn:translate-x-1 transition-transform duration-300"
+                        className={`${isRTL ? 'ml-2 group-hover/btn:-translate-x-1' : 'mr-2 group-hover/btn:translate-x-1'} transition-transform duration-300`}
                       >
-                        <ArrowRightIcon className="w-5 h-5" />
+                        <ArrowRightIcon className={`w-5 h-5 ${isRTL ? '' : 'rotate-180'}`} />
                       </motion.div>
-                      اكتشف المحركات
+                      {t.categories.portable.cta}
                     </motion.a>
                   </div>
                 </motion.div>
@@ -660,7 +665,7 @@ export default function HomePage() {
                 </motion.div>
                 <div className="text-center">
                   <h2 className="text-5xl md:text-7xl font-bold bg-gradient-to-l from-[#181b39] via-[#181b39]/90 to-[#c2b280] bg-clip-text text-transparent leading-tight">
-                    لماذا توهاتسو؟
+                    {t.valueProps.title}
                   </h2>
                   <motion.div 
                     className="w-32 h-1 bg-gradient-to-l from-[#c2b280] to-[#181b39] rounded-full mx-auto mt-4"
@@ -678,7 +683,7 @@ export default function HomePage() {
                 transition={{ delay: 0.3, duration: 0.8 }}
                 viewport={{ once: true }}
               >
-                اكتشف كيف تحل محركات توهاتسو تحدياتك البحرية وتقدم لك قيمة لا مثيل لها
+                {t.valueProps.subtitle}
               </motion.p>
             </motion.div>
             
@@ -692,45 +697,30 @@ export default function HomePage() {
               {[
                 {
                   icon: TrophyIcon,
-                  title: "الأداء الذي يحل مشاكلك",
-                  subtitle: "موثوقية لا تتنازل",
-                  description: "هل تواجه مشاكل مع محركك الحالي؟ محركات توهاتسو مصممة لتعمل في أقسى الظروف بدون أعطال أو توقف مفاجئ.",
-                  benefits: [
-                    "بدء تشغيل فوري حتى في البرد القارس",
-                    "أداء ثابت في المياه المالحة",
-                    "مقاومة التآكل والصدأ",
-                    "عمر خدمة يصل إلى 20+ سنة"
-                  ],
+                  title: t.valueProps.performance.title,
+                  subtitle: t.valueProps.performance.subtitle,
+                  description: t.valueProps.performance.description,
+                  benefits: t.valueProps.performance.benefits,
                   gradient: "from-[#181b39] via-[#181b39]/80 to-[#181b39]/60",
                   accentColor: "text-[#c2b280]",
                   bgPattern: "radial-gradient(circle at 20% 80%, rgba(194, 178, 128, 0.1) 0%, transparent 50%)"
                 },
                 {
                   icon: BoltIcon,
-                  title: "توفير حقيقي في التكاليف",
-                  subtitle: "استثمار ذكي",
-                  description: "هل تشعر بالقلق من ارتفاع تكاليف الوقود والصيانة؟ محركاتنا توفر لك حتى 40% في استهلاك الوقود مع صيانة أقل.",
-                  benefits: [
-                    "توفير 40% في استهلاك الوقود",
-                    "فترات صيانة أطول بـ 50%",
-                    "قطع غيار متوفرة ومعقولة التكلفة",
-                    "قيمة إعادة بيع عالية"
-                  ],
+                  title: t.valueProps.savings.title,
+                  subtitle: t.valueProps.savings.subtitle,
+                  description: t.valueProps.savings.description,
+                  benefits: t.valueProps.savings.benefits,
                   gradient: "from-[#c2b280] via-[#c2b280]/80 to-[#c2b280]/60",
                   accentColor: "text-[#181b39]",
                   bgPattern: "radial-gradient(circle at 80% 20%, rgba(24, 27, 57, 0.1) 0%, transparent 50%)"
                 },
                 {
                   icon: ShieldCheckIcon,
-                  title: "راحة البال الكاملة",
-                  subtitle: "ثقة مطلقة",
-                  description: "هل تقلق من التعطل في عرض البحر؟ مع ضمان توهاتسو الشامل ودعم الخدمة على مدار الساعة، أنت في أمان تام.",
-                  benefits: [
-                    "ضمان شامل لـ 3 سنوات",
-                    "شبكة خدمة في جميع أنحاء المملكة",
-                    "دعم فني 24/7",
-                    "تدريب مجاني على الاستخدام"
-                  ],
+                  title: t.valueProps.peace.title,
+                  subtitle: t.valueProps.peace.subtitle,
+                  description: t.valueProps.peace.description,
+                  benefits: t.valueProps.peace.benefits,
                   gradient: "from-slate-600 via-slate-500 to-slate-400",
                   accentColor: "text-[#c2b280]",
                   bgPattern: "radial-gradient(circle at 50% 50%, rgba(194, 178, 128, 0.1) 0%, transparent 70%)"
@@ -754,10 +744,10 @@ export default function HomePage() {
                   {/* Gradient overlay on hover */}
                   <div className={`absolute inset-0 bg-gradient-to-br ${value.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-700`} />
                   
-                  <div className="relative z-10 p-8 text-right h-full flex flex-col">
+                  <div className={`relative z-10 p-8 ${isRTL ? 'text-right' : 'text-left'} h-full flex flex-col`}>
                     {/* Icon with enhanced animation */}
                     <motion.div
-                      className={`w-20 h-20 bg-gradient-to-br ${value.gradient} rounded-2xl flex items-center justify-center mb-6 mr-auto shadow-lg relative overflow-hidden`}
+                      className={`w-20 h-20 bg-gradient-to-br ${value.gradient} rounded-2xl flex items-center justify-center mb-6 ${isRTL ? 'mr-auto' : 'ml-auto'} shadow-lg relative overflow-hidden`}
                       whileHover={{ 
                         scale: 1.1,
                         rotate: [0, -5, 5, 0],
@@ -807,7 +797,7 @@ export default function HomePage() {
                         {value.benefits.map((benefit, benefitIndex) => (
                           <motion.div
                             key={benefitIndex}
-                            className="flex items-center justify-end group/item"
+                            className={`flex items-center ${isRTL ? 'justify-end' : 'justify-start'} group/item`}
                             initial={{ opacity: 0, x: 20 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             transition={{ 
@@ -819,7 +809,7 @@ export default function HomePage() {
                               {benefit}
                             </span>
                             <motion.div
-                              className="mr-3 flex-shrink-0"
+                              className={`${isRTL ? 'mr-3' : 'ml-3'} flex-shrink-0`}
                               whileHover={{ scale: 1.2 }}
                               transition={{ duration: 0.2 }}
                             >
@@ -832,7 +822,7 @@ export default function HomePage() {
                     
                     {/* Subtle bottom accent */}
                     <motion.div 
-                      className={`w-16 h-1 bg-gradient-to-l ${value.gradient} rounded-full mr-auto mt-6 opacity-60 group-hover:opacity-100 group-hover:w-24 transition-all duration-500`}
+                      className={`w-16 h-1 bg-gradient-to-l ${value.gradient} rounded-full ${isRTL ? 'mr-auto' : 'ml-auto'} mt-6 opacity-60 group-hover:opacity-100 group-hover:w-24 transition-all duration-500`}
                       initial={{ width: 0 }}
                       whileInView={{ width: 64 }}
                       transition={{ delay: 0.8 + index * 0.1, duration: 0.6 }}
@@ -865,7 +855,7 @@ export default function HomePage() {
                   }}
                   transition={{ duration: 8, repeat: Infinity }}
                 >
-                  جرب الفرق بنفسك
+                  {t.valueProps.ctaTitle}
                 </motion.h3>
                 
                 <motion.p 
@@ -874,7 +864,7 @@ export default function HomePage() {
                   whileInView={{ opacity: 1 }}
                   transition={{ delay: 0.2, duration: 0.6 }}
                 >
-                  احجز اختبار قيادة مجاني أو استشارة مع خبرائنا لتكتشف لماذا يختار المحترفون توهاتسو
+                  {t.valueProps.ctaSubtitle}
                 </motion.p>
                 
                 <motion.div 
@@ -893,7 +883,7 @@ export default function HomePage() {
                   >
                     <div className="absolute inset-0 bg-white/10 translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
                     <motion.div
-                      className="mr-3 relative z-10"
+                      className={`${isRTL ? 'mr-3' : 'ml-3'} relative z-10`}
                       animate={{ 
                         scale: [1, 1.1, 1],
                       }}
@@ -901,7 +891,7 @@ export default function HomePage() {
                     >
                       <TruckIcon className="w-6 h-6" />
                     </motion.div>
-                    <span className="relative z-10">احجز اختبار قيادة مجاني</span>
+                                          <span className="relative z-10">{t.valueProps.testDrive}</span>
                   </motion.a>
                   
                   <motion.a
@@ -912,7 +902,7 @@ export default function HomePage() {
                     whileTap={{ scale: 0.95 }}
                   >
                     <motion.div
-                      className="mr-3"
+                      className={`${isRTL ? 'mr-3' : 'ml-3'}`}
                       animate={{ 
                         rotate: [0, 10, -10, 0],
                       }}
@@ -920,7 +910,7 @@ export default function HomePage() {
                     >
                       <PhoneIcon className="w-6 h-6" />
                     </motion.div>
-                    تحدث مع خبير
+                                          {t.valueProps.talkExpert}
                   </motion.a>
                 </motion.div>
               </motion.div>
@@ -968,7 +958,7 @@ export default function HomePage() {
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              هل أنت مستعد للانطلاق؟
+                              {t.finalCta.title}
             </motion.h2>
             
             <motion.p 
@@ -978,8 +968,7 @@ export default function HomePage() {
               transition={{ delay: 0.2, duration: 0.8 }}
               viewport={{ once: true }}
             >
-              سواء كنت تبحث عن محرك جديد، تحتاج إلى صيانة، أو ترغب في معرفة المزيد، 
-              نحن هنا لمساعدتك في كل خطوة من رحلتك البحرية.
+              {t.finalCta.subtitle}
             </motion.p>
             
             <motion.div 
@@ -995,7 +984,7 @@ export default function HomePage() {
                 {...scaleOnHover}
               >
                 <motion.div
-                  className="mr-3"
+                  className={`${isRTL ? 'mr-3' : 'ml-3'}`}
                   animate={{ 
                     scale: [1, 1.05, 1],
                   }}
@@ -1003,7 +992,7 @@ export default function HomePage() {
                 >
                   <MapIcon className="w-6 h-6" />
                 </motion.div>
-                ابحث عن وكيل
+                                    {t.finalCta.findDealer}
               </motion.a>
               
               <motion.a
@@ -1012,7 +1001,7 @@ export default function HomePage() {
                 {...scaleOnHover}
               >
                 <motion.div
-                  className="mr-3"
+                  className={`${isRTL ? 'mr-3' : 'ml-3'}`}
                   animate={{ 
                     y: [0, -2, 0],
                   }}
@@ -1020,7 +1009,7 @@ export default function HomePage() {
                 >
                   <EnvelopeIcon className="w-6 h-6" />
                 </motion.div>
-                اطلب عرض سعر
+                                  {t.finalCta.getQuote}
               </motion.a>
             </motion.div>
           </div>

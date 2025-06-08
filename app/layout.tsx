@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Noto_Kufi_Arabic } from "next/font/google";
 import "./globals.css";
 import WhatsAppButton from "./components/WhatsAppButton";
+import { LanguageProvider } from "./contexts/LanguageContext";
 
 const notoKufiArabic = Noto_Kufi_Arabic({
   subsets: ["arabic"],
@@ -51,8 +52,10 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl" className={notoKufiArabic.variable}>
       <body className={`${notoKufiArabic.className} antialiased`}>
-        {children}
-        <WhatsAppButton />
+        <LanguageProvider>
+          {children}
+          <WhatsAppButton />
+        </LanguageProvider>
       </body>
     </html>
   );

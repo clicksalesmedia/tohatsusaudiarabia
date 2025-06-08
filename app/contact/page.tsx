@@ -5,6 +5,7 @@ import { useRef, useState } from 'react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import { useParticles } from '../utils/particlePositions'
+import { useLanguage } from '../contexts/LanguageContext'
 import { 
   PhoneIcon,
   EnvelopeIcon,
@@ -42,9 +43,81 @@ const scaleOnHover = {
   whileTap: { scale: 0.98 }
 }
 
+interface ContactMethod {
+  title: string
+  description: string
+  info: string
+  action: string
+  color: string
+  bgColor: string
+}
+
+interface Department {
+  title: string
+  description: string
+  phone: string
+  email: string
+  hours: string
+}
+
+interface FAQ {
+  question: string
+  answer: string
+}
+
+interface ContentData {
+  pageTitle: string
+  heroDescription: string
+  stats: {
+    happyCustomers: string
+    supportAvailable: string
+    yearsExperience: string
+    serviceLocations: string
+  }
+  statsLabels: {
+    happyCustomers: string
+    supportAvailable: string
+    yearsExperience: string
+    serviceLocations: string
+  }
+  contactMethodsTitle: string
+  contactMethodsDescription: string
+  contactMethods: ContactMethod[]
+  formTitle: string
+  formLabels: {
+    fullName: string
+    email: string
+    phoneNumber: string
+    engineType: string
+    message: string
+    sendMessage: string
+  }
+  formPlaceholders: {
+    fullName: string
+    email: string
+    phoneNumber: string
+    engineType: string
+    message: string
+  }
+  engineTypes: {
+    selectEngine: string
+    gasoline: string
+    diesel: string
+    airCooled: string
+  }
+  departmentsTitle: string
+  departmentsDescription: string
+  departments: Department[]
+  faqTitle: string
+  faqDescription: string
+  faqs: FAQ[]
+  faqCta: string
+}
+
 export default function ContactPage() {
   const heroRef = useRef(null)
   const isHeroInView = useInView(heroRef, { once: true })
+  const { language, isRTL } = useLanguage()
   
   // Form state
   const [formData, setFormData] = useState({
@@ -71,74 +144,261 @@ export default function ContactPage() {
     })
   }
 
-  const contactMethods = [
-    {
-      icon: PhoneIcon,
-      title: "اتصل بنا مباشرة",
-      description: "للاستفسارات العاجلة والدعم الفوري",
-      info: "+966 XX XXX XXXX",
-      action: "tel:+966xxxxxxxxx",
-      color: "from-emerald-500 to-emerald-600",
-      bgColor: "from-emerald-50 to-teal-50"
+  const content: Record<'ar' | 'en', ContentData> = {
+    ar: {
+      pageTitle: 'اتصل بنا',
+      heroDescription: 'نحن هنا لمساعدتك في كل ما تحتاجه. من الاستشارات التقنية إلى خدمة ما بعد البيع، فريقنا المتخصص جاهز لتقديم أفضل الدعم لك.',
+      stats: {
+        happyCustomers: '+100',
+        supportAvailable: '24/7',
+        yearsExperience: '15+',
+        serviceLocations: '5'
+      },
+      statsLabels: {
+        happyCustomers: 'عميل راضٍ',
+        supportAvailable: 'دعم متاح',
+        yearsExperience: 'سنة خبرة',
+        serviceLocations: 'مواقع خدمة'
+      },
+      contactMethodsTitle: 'طرق التواصل',
+      contactMethodsDescription: 'اختر الطريقة الأنسب للتواصل معنا، نحن متاحون لخدمتك بأفضل الطرق الممكنة',
+             contactMethods: [
+         {
+           title: 'اتصل بنا مباشرة',
+           description: 'للاستفسارات العاجلة والدعم الفوري',
+           info: '+966 56 650 1233',
+           action: 'tel:+966566501233',
+           color: 'from-emerald-500 to-emerald-600',
+           bgColor: 'from-emerald-50 to-teal-50'
+         },
+         {
+           title: 'راسلنا عبر البريد',
+           description: 'للاستفسارات التفصيلية والوثائق',
+           info: 'info@tohatsuarabia.com',
+           action: 'mailto:info@tohatsuarabia.com',
+           color: 'from-[#181b39] to-[#181b39]/80',
+           bgColor: 'from-[#181b39]/5 to-[#181b39]/10'
+         },
+        {
+          title: 'قم بزيارة مكاتبنا',
+          description: 'للاستشارات الشخصية ومعاينة المحركات',
+          info: 'الرياض، المملكة العربية السعودية',
+          action: '#location',
+          color: 'from-[#c2b280] to-[#c2b280]/80',
+          bgColor: 'from-[#c2b280]/10 to-[#c2b280]/20'
+        },
+        {
+          title: 'محادثة مباشرة',
+          description: 'دعم فوري من خبرائنا المتخصصين',
+          info: 'متاح 24/7',
+          action: '#chat',
+          color: 'from-slate-600 to-slate-700',
+          bgColor: 'from-slate-50 to-gray-50'
+        }
+      ],
+      formTitle: 'أرسل لنا رسالة',
+      formLabels: {
+        fullName: 'الاسم الكامل *',
+        email: 'البريد الإلكتروني *',
+        phoneNumber: 'رقم الهاتف',
+        engineType: 'نوع المحرك',
+        message: 'الرسالة *',
+        sendMessage: 'إرسال الرسالة'
+      },
+             formPlaceholders: {
+         fullName: 'أدخل اسمك الكامل',
+         email: 'example@email.com',
+         phoneNumber: '+966 56 650 1233',
+         engineType: 'اختر نوع المحرك',
+         message: 'اكتب رسالتك هنا...'
+       },
+      engineTypes: {
+        selectEngine: 'اختر نوع المحرك',
+        gasoline: 'بنزين',
+        diesel: 'ديزل',
+        airCooled: 'مبرد بالهواء'
+      },
+      departmentsTitle: 'أقسامنا المتخصصة',
+      departmentsDescription: 'اتصل بالقسم المناسب مباشرة حسب احتياجك',
+             departments: [
+         {
+           title: 'المبيعات والاستشارات',
+           description: 'اختيار المحركات وعروض الأسعار',
+           phone: '+966 56 650 1233',
+           email: 'sales@tohatsuarabia.com',
+           hours: 'الأحد - الخميس: 9:00 ص - 6:00 م'
+         },
+         {
+           title: 'الصيانة والدعم التقني',
+           description: 'خدمات الصيانة وحل المشاكل التقنية',
+           phone: '+966 56 650 1233',
+           email: 'support@tohatsuarabia.com',
+           hours: 'الأحد - الخميس: 8:00 ص - 5:00 م'
+         },
+         {
+           title: 'خدمة العملاء',
+           description: 'الاستفسارات العامة والمساعدة',
+           phone: '+966 56 650 1233',
+           email: 'info@tohatsuarabia.com',
+           hours: 'الأحد - الخميس: 9:00 ص - 5:00 م'
+         }
+      ],
+      faqTitle: 'الأسئلة الشائعة',
+      faqDescription: 'إجابات سريعة لأكثر الأسئلة شيوعاً حول منتجاتنا وخدماتنا',
+      faqs: [
+        {
+          question: 'ما هي فترة الضمان لمحركات توهاتسو؟',
+          answer: 'نقدم ضماناً شاملاً لمدة عامين على جميع محركاتنا، بالإضافة إلى دعم ما بعد البيع والصيانة الدورية.'
+        },
+        {
+          question: 'هل قطع الغيار الأصلية متوفرة في السعودية؟',
+          answer: 'نعم، نحتفظ بمخزون كامل من قطع الغيار الأصلية في جميع مراكز الخدمة المعتمدة في أنحاء المملكة.'
+        },
+        {
+          question: 'كم يستغرق وقت الصيانة الدورية؟',
+          answer: 'تستغرق الصيانة الدورية عادة من 2-4 ساعات حسب نوع المحرك والخدمات المطلوبة.'
+        },
+        {
+          question: 'هل يمكنني طلب خدمة الصيانة في الموقع؟',
+          answer: 'نعم، نقدم خدمات الصيانة المتنقلة في المناطق الرئيسية للمحركات الكبيرة والحالات الطارئة.'
+        },
+        {
+          question: 'ما هي طرق الدفع المتاحة؟',
+          answer: 'نقبل جميع طرق الدفع: نقداً، تحويل بنكي، بطاقات ائتمانية، ودفع بالأقساط للمبالغ الكبيرة.'
+        }
+      ],
+      faqCta: 'لم تجد إجابة؟ اسألنا مباشرة'
     },
-    {
-      icon: EnvelopeIcon,
-      title: "راسلنا إلكترونياً",
-      description: "للاستفسارات التفصيلية والوثائق",
-      info: "info@tohatsu-saudi.com",
-      action: "mailto:info@tohatsu-saudi.com",
-      color: "from-[#181b39] to-[#181b39]/80",
-      bgColor: "from-[#181b39]/5 to-[#181b39]/10"
-    },
-    {
-      icon: MapPinIcon,
-      title: "زر مكاتبنا",
-      description: "للاستشارات الشخصية ومعاينة المحركات",
-      info: "الرياض، المملكة العربية السعودية",
-      action: "#location",
-      color: "from-[#c2b280] to-[#c2b280]/80",
-      bgColor: "from-[#c2b280]/10 to-[#c2b280]/20"
-    },
-    {
-      icon: ChatBubbleLeftRightIcon,
-      title: "الدردشة المباشرة",
-      description: "دعم فوري من خبرائنا المتخصصين",
-      info: "متاح 24/7",
-      action: "#chat",
-      color: "from-slate-600 to-slate-700",
-      bgColor: "from-slate-50 to-gray-50"
+    en: {
+      pageTitle: 'Contact Us',
+      heroDescription: "We're here to help you with everything you need. From technical consultations to after-sales service, our specialized team is ready to provide you with the best support.",
+      stats: {
+        happyCustomers: '+100',
+        supportAvailable: '24/7',
+        yearsExperience: '15+',
+        serviceLocations: '5'
+      },
+      statsLabels: {
+        happyCustomers: 'Happy Customers',
+        supportAvailable: 'Support Available',
+        yearsExperience: 'Years Experience',
+        serviceLocations: 'Service Locations'
+      },
+      contactMethodsTitle: 'Contact Methods',
+      contactMethodsDescription: 'Choose the most convenient way to contact us, we\'re available to serve you in the best possible ways',
+             contactMethods: [
+         {
+           title: 'Call Us Directly',
+           description: 'For urgent inquiries and immediate support',
+           info: '+966 56 650 1233',
+           action: 'tel:+966566501233',
+           color: 'from-emerald-500 to-emerald-600',
+           bgColor: 'from-emerald-50 to-teal-50'
+         },
+         {
+           title: 'Email Us',
+           description: 'For detailed inquiries and documentation',
+           info: 'info@tohatsuarabia.com',
+           action: 'mailto:info@tohatsuarabia.com',
+           color: 'from-[#181b39] to-[#181b39]/80',
+           bgColor: 'from-[#181b39]/5 to-[#181b39]/10'
+         },
+        {
+          title: 'Visit Our Offices',
+          description: 'For personal consultations and engine viewing',
+          info: 'Riyadh, Saudi Arabia',
+          action: '#location',
+          color: 'from-[#c2b280] to-[#c2b280]/80',
+          bgColor: 'from-[#c2b280]/10 to-[#c2b280]/20'
+        },
+        {
+          title: 'Live Chat',
+          description: 'Instant support from our specialized experts',
+          info: 'Available 24/7',
+          action: '#chat',
+          color: 'from-slate-600 to-slate-700',
+          bgColor: 'from-slate-50 to-gray-50'
+        }
+      ],
+      formTitle: 'Send Us a Message',
+      formLabels: {
+        fullName: 'Full Name *',
+        email: 'Email *',
+        phoneNumber: 'Phone Number',
+        engineType: 'Engine Type',
+        message: 'Message *',
+        sendMessage: 'Send Message'
+      },
+             formPlaceholders: {
+         fullName: 'Enter your full name',
+         email: 'example@email.com',
+         phoneNumber: '+966 56 650 1233',
+         engineType: 'Select Engine Type',
+         message: 'Write your message here...'
+       },
+      engineTypes: {
+        selectEngine: 'Select Engine Type',
+        gasoline: 'Gasoline',
+        diesel: 'Diesel',
+        airCooled: 'Air-Cooled'
+      },
+      departmentsTitle: 'Our Specialized Departments',
+      departmentsDescription: 'Contact the appropriate department directly for your needs',
+             departments: [
+         {
+           title: 'Sales & Consultations',
+           description: 'Engine selection and price quotes',
+           phone: '+966 56 650 1233',
+           email: 'sales@tohatsuarabia.com',
+           hours: 'Sunday - Thursday: 9:00 AM - 6:00 PM'
+         },
+         {
+           title: 'Maintenance & Technical Support',
+           description: 'Maintenance services and technical problem solving',
+           phone: '+966 56 650 1233',
+           email: 'support@tohatsuarabia.com',
+           hours: 'Sunday - Thursday: 8:00 AM - 5:00 PM'
+         },
+         {
+           title: 'Customer Service',
+           description: 'General inquiries and assistance',
+           phone: '+966 56 650 1233',
+           email: 'info@tohatsuarabia.com',
+           hours: 'Sunday - Thursday: 9:00 AM - 5:00 PM'
+         }
+      ],
+      faqTitle: 'Frequently Asked Questions',
+      faqDescription: 'Quick answers to the most common questions about our products and services',
+      faqs: [
+        {
+          question: 'What is the warranty period for Tohatsu engines?',
+          answer: 'We provide a comprehensive 2-year warranty on all our engines, plus after-sales support and regular maintenance.'
+        },
+        {
+          question: 'Are original spare parts available in Saudi Arabia?',
+          answer: 'Yes, we maintain a complete inventory of original spare parts at all authorized service centers throughout the Kingdom.'
+        },
+        {
+          question: 'How long does regular maintenance take?',
+          answer: 'Regular maintenance typically takes 2-4 hours depending on the engine type and required services.'
+        },
+        {
+          question: 'Can I request on-site maintenance service?',
+          answer: 'Yes, we provide mobile maintenance services in major areas for large engines and emergency cases.'
+        },
+        {
+          question: 'What payment methods are available?',
+          answer: 'We accept all payment methods: cash, bank transfer, credit cards, and installment payments for large amounts.'
+        }
+      ],
+      faqCta: "Didn't find an answer? Ask us directly"
     }
-  ]
+  }
 
-  const departments = [
-    {
-      icon: CogIcon,
-      title: "المبيعات والاستشارات",
-      description: "اختيار المحرك المناسب وعروض الأسعار",
-      phone: "+966 XX XXX XXXX",
-      email: "sales@tohatsu-saudi.com",
-      hours: "الأحد - الخميس: 9:00 ص - 6:00 م"
-    },
-    {
-      icon: WrenchScrewdriverIcon,
-      title: "الصيانة والدعم التقني",
-      description: "خدمات الصيانة وحل المشاكل التقنية",
-      phone: "+966 XX XXX XXXX",
-      email: "support@tohatsu-saudi.com",
-      hours: "الأحد - الخميس: 8:00 ص - 5:00 م"
-    },
-    {
-      icon: UserGroupIcon,
-      title: "خدمة العملاء",
-      description: "الاستفسارات العامة والمساعدة",
-      phone: "+966 XX XXX XXXX",
-      email: "info@tohatsu-saudi.com",
-      hours: "الأحد - الخميس: 9:00 ص - 5:00 م"
-    }
-  ]
+  const currentContent = content[language]
 
   return (
-    <div dir="rtl" className="font-sans">
+    <div dir={isRTL ? 'rtl' : 'ltr'} className="font-sans">
       <Header />
 
       <main>
@@ -149,7 +409,6 @@ export default function ContactPage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
-          dir="rtl"
         >
           {/* Background Image */}
           <div className="absolute inset-0">
@@ -170,7 +429,7 @@ export default function ContactPage() {
                 key={i}
                 className="absolute w-1 h-1 bg-white/20 rounded-full"
                 style={{
-                  right: `${particle.right}%`,
+                  [isRTL ? 'right' : 'left']: `${particle.right}%`,
                   top: `${particle.top}%`,
                 }}
                 animate={{
@@ -199,9 +458,9 @@ export default function ContactPage() {
                 }}
                 transition={{ duration: 4, repeat: Infinity }}
               >
-                <SparklesIcon className="w-16 h-16 text-[#c2b280] ml-4" />
+                <SparklesIcon className={`w-16 h-16 text-[#c2b280] ${isRTL ? 'ml-4' : 'mr-4'}`} />
                 <h1 className="text-5xl md:text-6xl font-bold">
-                  تواصل معنا
+                  {currentContent.pageTitle}
                 </h1>
               </motion.div>
               
@@ -211,8 +470,7 @@ export default function ContactPage() {
                 animate={isHeroInView ? { y: 0, opacity: 1 } : {}}
                 transition={{ delay: 0.2, duration: 0.8 }}
               >
-                نحن هنا لمساعدتك في كل ما تحتاجه. من الاستشارات التقنية إلى خدمة ما بعد البيع، 
-                فريقنا المتخصص جاهز لتقديم أفضل دعم لك.
+                {currentContent.heroDescription}
               </motion.p>
 
               <motion.div
@@ -222,20 +480,20 @@ export default function ContactPage() {
                 transition={{ delay: 0.4, duration: 0.8 }}
               >
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-[#c2b280]">+100</div>
-                  <div className="text-sm opacity-80">عميل سعيد</div>
+                  <div className="text-2xl font-bold text-[#c2b280]">{currentContent.stats.happyCustomers}</div>
+                  <div className="text-sm opacity-80">{currentContent.statsLabels.happyCustomers}</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-[#c2b280]">24/7</div>
-                  <div className="text-sm opacity-80">دعم متاح</div>
+                  <div className="text-2xl font-bold text-[#c2b280]">{currentContent.stats.supportAvailable}</div>
+                  <div className="text-sm opacity-80">{currentContent.statsLabels.supportAvailable}</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-[#c2b280]">15+</div>
-                  <div className="text-sm opacity-80">سنة خبرة</div>
+                  <div className="text-2xl font-bold text-[#c2b280]">{currentContent.stats.yearsExperience}</div>
+                  <div className="text-sm opacity-80">{currentContent.statsLabels.yearsExperience}</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-[#c2b280]">5</div>
-                  <div className="text-sm opacity-80">مواقع خدمة</div>
+                  <div className="text-2xl font-bold text-[#c2b280]">{currentContent.stats.serviceLocations}</div>
+                  <div className="text-sm opacity-80">{currentContent.statsLabels.serviceLocations}</div>
                 </div>
               </motion.div>
             </motion.div>
@@ -249,7 +507,6 @@ export default function ContactPage() {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          dir="rtl"
         >
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
@@ -262,7 +519,7 @@ export default function ContactPage() {
                 transition={{ duration: 0.3 }}
               >
                 <motion.div
-                  className="ml-4"
+                  className={isRTL ? "ml-4" : "mr-4"}
                   animate={{ 
                     scale: [1, 1.1, 1],
                   }}
@@ -271,11 +528,11 @@ export default function ContactPage() {
                   <ChatBubbleLeftRightIcon className="w-12 h-12 text-[#c2b280]" />
                 </motion.div>
                 <h2 className="text-4xl md:text-5xl font-bold text-[#181b39]">
-                  طرق التواصل
+                  {currentContent.contactMethodsTitle}
                 </h2>
               </motion.div>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                اختر الطريقة الأنسب للتواصل معنا، نحن متاحون لخدمتك بأفضل الطرق الممكنة
+                {currentContent.contactMethodsDescription}
               </p>
             </motion.div>
 
@@ -286,35 +543,39 @@ export default function ContactPage() {
               whileInView="animate"
               viewport={{ once: true }}
             >
-              {contactMethods.map((method, index) => (
-                <motion.a
-                  key={index}
-                  href={method.action}
-                  className={`group block bg-gradient-to-bl ${method.bgColor} p-8 rounded-2xl shadow-md hover:shadow-lg transition-all duration-500 border border-gray-100 text-center relative overflow-hidden`}
-                  variants={fadeInUp}
-                  {...scaleOnHover}
-                >
-                  <motion.div
-                    className={`w-16 h-16 bg-gradient-to-bl ${method.color} rounded-xl mx-auto mb-6 flex items-center justify-center`}
-                    whileHover={{ scale: 1.1 }}
-                    transition={{ duration: 0.3 }}
+              {currentContent.contactMethods.map((method, index) => {
+                const icons = [PhoneIcon, EnvelopeIcon, MapPinIcon, ChatBubbleLeftRightIcon]
+                const Icon = icons[index]
+                return (
+                  <motion.a
+                    key={index}
+                    href={method.action}
+                    className={`group block bg-gradient-to-bl ${method.bgColor} p-8 rounded-2xl shadow-md hover:shadow-lg transition-all duration-500 border border-gray-100 text-center relative overflow-hidden`}
+                    variants={fadeInUp}
+                    {...scaleOnHover}
                   >
-                    <method.icon className="w-8 h-8 text-white" />
-                  </motion.div>
-                  
-                  <h3 className="text-xl font-bold text-[#181b39] mb-3 group-hover:text-[#181b39]/80 transition-colors duration-300">
-                    {method.title}
-                  </h3>
-                  
-                  <p className="text-gray-600 mb-4 text-sm leading-relaxed">
-                    {method.description}
-                  </p>
-                  
-                  <div className="font-semibold text-[#c2b280] group-hover:text-[#c2b280]/80 transition-colors duration-300">
-                    {method.info}
-                  </div>
-                </motion.a>
-              ))}
+                    <motion.div
+                      className={`w-16 h-16 bg-gradient-to-bl ${method.color} rounded-xl mx-auto mb-6 flex items-center justify-center`}
+                      whileHover={{ scale: 1.1 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <Icon className="w-8 h-8 text-white" />
+                    </motion.div>
+                    
+                    <h3 className="text-xl font-bold text-[#181b39] mb-3 group-hover:text-[#181b39]/80 transition-colors duration-300">
+                      {method.title}
+                    </h3>
+                    
+                    <p className="text-gray-600 mb-4 text-sm leading-relaxed">
+                      {method.description}
+                    </p>
+                    
+                    <div className="font-semibold text-[#c2b280] group-hover:text-[#c2b280]/80 transition-colors duration-300" dir={method.action.startsWith('tel:') ? 'ltr' : 'auto'}>
+                      {method.info}
+                    </div>
+                  </motion.a>
+                )
+              })}
             </motion.div>
           </div>
         </motion.section>
@@ -326,7 +587,6 @@ export default function ContactPage() {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          dir="rtl"
         >
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
@@ -341,7 +601,7 @@ export default function ContactPage() {
                   transition={{ duration: 0.3 }}
                 >
                   <motion.div
-                    className="ml-4"
+                    className={isRTL ? "ml-4" : "mr-4"}
                     animate={{ 
                       scale: [1, 1.05, 1],
                     }}
@@ -350,15 +610,15 @@ export default function ContactPage() {
                     <DocumentTextIcon className="w-10 h-10 text-[#c2b280]" />
                   </motion.div>
                   <h3 className="text-3xl font-bold text-[#181b39]">
-                    أرسل لنا رسالة
+                    {currentContent.formTitle}
                   </h3>
                 </motion.div>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2 text-right">
-                        الاسم الكامل *
+                      <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                        {currentContent.formLabels.fullName}
                       </label>
                       <input
                         type="text"
@@ -367,14 +627,15 @@ export default function ContactPage() {
                         value={formData.name}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#c2b280] focus:border-[#c2b280] transition-colors duration-200 text-right"
-                        placeholder="أدخل اسمك الكامل"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#c2b280] focus:border-[#c2b280] transition-colors duration-200"
+                        placeholder={currentContent.formPlaceholders.fullName}
+                        dir={isRTL ? 'rtl' : 'ltr'}
                       />
                     </div>
                     
                     <div>
-                      <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2 text-right">
-                        البريد الإلكتروني *
+                      <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                        {currentContent.formLabels.email}
                       </label>
                       <input
                         type="email"
@@ -383,16 +644,17 @@ export default function ContactPage() {
                         value={formData.email}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#c2b280] focus:border-[#c2b280] transition-colors duration-200 text-right"
-                        placeholder="example@email.com"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#c2b280] focus:border-[#c2b280] transition-colors duration-200"
+                        placeholder={currentContent.formPlaceholders.email}
+                        dir="ltr"
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2 text-right">
-                        رقم الهاتف
+                      <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                        {currentContent.formLabels.phoneNumber}
                       </label>
                       <input
                         type="tel"
@@ -400,33 +662,35 @@ export default function ContactPage() {
                         name="phone"
                         value={formData.phone}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#c2b280] focus:border-[#c2b280] transition-colors duration-200 text-right"
-                        placeholder="+966 XX XXX XXXX"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#c2b280] focus:border-[#c2b280] transition-colors duration-200"
+                        placeholder={currentContent.formPlaceholders.phoneNumber}
+                        dir="ltr"
                       />
                     </div>
                     
                     <div>
-                      <label htmlFor="engineType" className="block text-sm font-medium text-gray-700 mb-2 text-right">
-                        نوع المحرك
+                      <label htmlFor="engineType" className="block text-sm font-medium text-gray-700 mb-2">
+                        {currentContent.formLabels.engineType}
                       </label>
                       <select
                         id="engineType"
                         name="engineType"
                         value={formData.engineType}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#c2b280] focus:border-[#c2b280] transition-colors duration-200 text-right"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#c2b280] focus:border-[#c2b280] transition-colors duration-200"
+                        dir={isRTL ? 'rtl' : 'ltr'}
                       >
-                        <option value="">اختر نوع المحرك</option>
-                        <option value="بنزين">بنزين</option>
-                        <option value="ديزل">ديزل</option>
-                        <option value="هوائي">هوائي</option>
+                        <option value="">{currentContent.engineTypes.selectEngine}</option>
+                        <option value="gasoline">{currentContent.engineTypes.gasoline}</option>
+                        <option value="diesel">{currentContent.engineTypes.diesel}</option>
+                        <option value="air-cooled">{currentContent.engineTypes.airCooled}</option>
                       </select>
                     </div>
                   </div>
 
                   <div>
-                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2 text-right">
-                      الرسالة *
+                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+                      {currentContent.formLabels.message}
                     </label>
                     <textarea
                       id="message"
@@ -435,16 +699,19 @@ export default function ContactPage() {
                       onChange={handleChange}
                       required
                       rows={5}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#c2b280] focus:border-[#c2b280] transition-colors duration-200 text-right resize-vertical"
-                      placeholder="اكتب رسالتك هنا..."
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#c2b280] focus:border-[#c2b280] transition-colors duration-200 resize-vertical"
+                      placeholder={currentContent.formPlaceholders.message}
+                      dir={isRTL ? 'rtl' : 'ltr'}
                     />
                   </div>
 
                   <motion.button
                     type="submit"
                     className={`w-full py-4 px-6 rounded-lg font-bold text-lg transition-all duration-300 bg-gradient-to-l from-[#c2b280] to-[#c2b280]/80 hover:from-[#c2b280]/90 hover:to-[#c2b280]/70 text-[#181b39] shadow-lg`}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                   >
-                    إرسال الرسالة
+                    {currentContent.formLabels.sendMessage}
                   </motion.button>
                 </form>
               </motion.div>
@@ -467,7 +734,7 @@ export default function ContactPage() {
                     transition={{ duration: 0.3 }}
                   >
                     <motion.div
-                      className="ml-4"
+                      className={isRTL ? "ml-4" : "mr-4"}
                       animate={{ 
                         scale: [1, 1.05, 1],
                       }}
@@ -476,56 +743,72 @@ export default function ContactPage() {
                       <UserGroupIcon className="w-10 h-10 text-[#c2b280]" />
                     </motion.div>
                     <h3 className="text-3xl font-bold text-[#181b39]">
-                      أقسامنا المتخصصة
+                      {currentContent.departmentsTitle}
                     </h3>
                   </motion.div>
                   <p className="text-gray-600">
-                    تواصل مباشرة مع القسم المناسب لاحتياجاتك
+                    {currentContent.departmentsDescription}
                   </p>
                 </motion.div>
 
-                {departments.map((dept, index) => (
-                  <motion.div
-                    key={index}
-                    className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-500 p-6 border border-gray-100"
-                    variants={fadeInUp}
-                    {...scaleOnHover}
-                  >
-                    <div className="flex items-start">
-                      <motion.div
-                        className="w-12 h-12 bg-gradient-to-bl from-[#c2b280] to-[#c2b280]/80 rounded-xl flex items-center justify-center ml-4 flex-shrink-0"
-                        whileHover={{ scale: 1.1 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <dept.icon className="w-6 h-6 text-white" />
-                      </motion.div>
-                      
-                      <div className="flex-1 text-right">
-                        <h4 className="text-xl font-bold text-[#181b39] mb-2">
-                          {dept.title}
-                        </h4>
-                        <p className="text-gray-600 mb-4 text-sm">
-                          {dept.description}
-                        </p>
+                {currentContent.departments.map((dept, index) => {
+                  const icons = [CogIcon, WrenchScrewdriverIcon, UserGroupIcon]
+                  const Icon = icons[index]
+                  return (
+                    <motion.div
+                      key={index}
+                      className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-500 p-6 border border-gray-100"
+                      variants={fadeInUp}
+                      {...scaleOnHover}
+                    >
+                      <div className="flex items-start">
+                        <motion.div
+                          className={`w-12 h-12 bg-gradient-to-bl from-[#c2b280] to-[#c2b280]/80 rounded-xl flex items-center justify-center ${isRTL ? 'ml-4' : 'mr-4'} flex-shrink-0`}
+                          whileHover={{ scale: 1.1 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <Icon className="w-6 h-6 text-white" />
+                        </motion.div>
                         
-                        <div className="space-y-2 text-sm">
-                          <div className="flex items-center justify-end">
-                            <span className="text-[#c2b280] font-medium">{dept.phone}</span>
-                            <PhoneIcon className="w-4 h-4 text-gray-400 mr-2" />
-                          </div>
-                          <div className="flex items-center justify-end">
-                            <span className="text-[#c2b280] font-medium">{dept.email}</span>
-                            <EnvelopeIcon className="w-4 h-4 text-gray-400 mr-2" />
-                          </div>
-                          <div className="flex items-center justify-end">
-                            <span className="text-gray-500 text-xs">{dept.hours}</span>
-                            <ClockIcon className="w-4 h-4 text-gray-400 mr-2" />
+                        <div className="flex-1">
+                          <h4 className="text-xl font-bold text-[#181b39] mb-2">
+                            {dept.title}
+                          </h4>
+                          <p className="text-gray-600 mb-4 text-sm">
+                            {dept.description}
+                          </p>
+                          
+                          <div className="space-y-2 text-sm">
+                            <div className="flex items-center">
+                              <PhoneIcon className={`w-4 h-4 text-gray-400 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                              <a 
+                                href={`tel:${dept.phone.replace(/\s/g, '')}`}
+                                className="text-[#c2b280] font-medium hover:text-[#c2b280]/80 transition-colors duration-200"
+                                dir="ltr"
+                              >
+                                {dept.phone}
+                              </a>
+                            </div>
+                            <div className="flex items-center">
+                              <EnvelopeIcon className={`w-4 h-4 text-gray-400 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                              <a 
+                                href={`mailto:${dept.email}`}
+                                className="text-[#c2b280] font-medium hover:text-[#c2b280]/80 transition-colors duration-200"
+                                dir="ltr"
+                              >
+                                {dept.email}
+                              </a>
+                            </div>
+                            <div className="flex items-center">
+                              <ClockIcon className={`w-4 h-4 text-gray-400 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                              <span className="text-gray-500 text-xs">{dept.hours}</span>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </motion.div>
-                ))}
+                    </motion.div>
+                  )
+                })}
               </motion.div>
             </div>
           </div>
@@ -538,7 +821,6 @@ export default function ContactPage() {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          dir="rtl"
         >
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
@@ -551,7 +833,7 @@ export default function ContactPage() {
                 transition={{ duration: 0.3 }}
               >
                 <motion.div
-                  className="ml-4"
+                  className={isRTL ? "ml-4" : "mr-4"}
                   animate={{ 
                     scale: [1, 1.1, 1],
                   }}
@@ -560,11 +842,11 @@ export default function ContactPage() {
                   <HeartIcon className="w-12 h-12 text-[#c2b280]" />
                 </motion.div>
                 <h2 className="text-4xl md:text-5xl font-bold text-[#181b39]">
-                  الأسئلة الشائعة
+                  {currentContent.faqTitle}
                 </h2>
               </motion.div>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                إجابات سريعة على أكثر الأسئلة شيوعاً حول منتجاتنا وخدماتنا
+                {currentContent.faqDescription}
               </p>
             </motion.div>
 
@@ -575,38 +857,17 @@ export default function ContactPage() {
               whileInView="animate"
               viewport={{ once: true }}
             >
-              {[
-                {
-                  question: "ما هي فترة الضمان على محركات توهاتسو؟",
-                  answer: "نوفر ضماناً شاملاً لمدة سنتين على جميع محركاتنا، بالإضافة إلى دعم ما بعد البيع والصيانة الدورية."
-                },
-                {
-                  question: "هل تتوفر قطع الغيار الأصلية في السعودية؟",
-                  answer: "نعم، لدينا مخزون كامل من قطع الغيار الأصلية في جميع مراكز الخدمة المعتمدة في المملكة."
-                },
-                {
-                  question: "كم يستغرق وقت الصيانة الدورية؟",
-                  answer: "الصيانة الدورية تستغرق عادة من 2-4 ساعات حسب نوع المحرك والخدمات المطلوبة."
-                },
-                {
-                  question: "هل يمكنني طلب خدمة الصيانة في الموقع؟",
-                  answer: "نعم، نوفر خدمة الصيانة المتنقلة في المناطق الرئيسية للمحركات الكبيرة والحالات الطارئة."
-                },
-                {
-                  question: "ما هي طرق الدفع المتاحة؟",
-                  answer: "نقبل جميع طرق الدفع: النقد، التحويل البنكي، البطاقات الائتمانية، والدفع بالتقسيط للمبالغ الكبيرة."
-                }
-              ].map((faq, index) => (
+              {currentContent.faqs.map((faq, index) => (
                 <motion.div
                   key={index}
                   className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-500 p-6 border border-gray-100"
                   variants={fadeInUp}
                   {...scaleOnHover}
                 >
-                  <h4 className="text-xl font-bold text-[#181b39] mb-3 text-right">
+                  <h4 className="text-xl font-bold text-[#181b39] mb-3">
                     {faq.question}
                   </h4>
-                  <p className="text-gray-600 leading-relaxed text-right">
+                  <p className="text-gray-600 leading-relaxed">
                     {faq.answer}
                   </p>
                 </motion.div>
@@ -625,16 +886,15 @@ export default function ContactPage() {
                 className="group bg-gradient-to-l from-[#c2b280] to-[#c2b280]/80 hover:from-[#c2b280]/90 hover:to-[#c2b280]/70 text-[#181b39] font-bold py-4 px-10 rounded-xl text-xl transition-all duration-300 inline-flex items-center shadow-lg"
                 {...scaleOnHover}
               >
+                <ArrowRightIcon className={`w-6 h-6 ${isRTL ? 'ml-3' : 'mr-3'}`} />
                 <motion.div
-                  className="ml-3"
                   animate={{ 
-                    x: [0, 3, 0],
+                    x: isRTL ? [-3, 0, -3] : [0, 3, 0],
                   }}
                   transition={{ duration: 2, repeat: Infinity }}
                 >
-                  <ArrowRightIcon className="w-6 h-6" />
+                  {currentContent.faqCta}
                 </motion.div>
-                لم تجد إجابة؟ اسألنا مباشرة
               </motion.a>
             </motion.div>
           </div>

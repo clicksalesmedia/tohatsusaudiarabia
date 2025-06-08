@@ -5,6 +5,8 @@ import { useRef, useState, useEffect } from 'react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import { useParticles } from '../utils/particlePositions'
+import { useLanguage } from '../contexts/LanguageContext'
+import { useTranslations } from '../translations'
 import { 
   SparklesIcon,
   ClockIcon,
@@ -86,6 +88,10 @@ function AnimatedCounter({ end, duration = 2000, suffix = "" }: { end: number, d
 }
 
 export default function AboutPage() {
+  const { language } = useLanguage()
+  const t = useTranslations(language)
+  const isRTL = language === 'ar'
+  
   const heroRef = useRef(null)
   const isHeroInView = useInView(heroRef, { once: true })
   
@@ -95,7 +101,7 @@ export default function AboutPage() {
   const ctaParticles = useParticles(12, 'about-cta')
 
   return (
-    <div dir="rtl" className="font-sans">
+    <div dir={isRTL ? 'rtl' : 'ltr'} className="font-sans">
       <Header />
 
       {/* Main Content */}
@@ -107,13 +113,13 @@ export default function AboutPage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
-          dir="rtl"
+          dir={isRTL ? 'rtl' : 'ltr'}
         >
           {/* Left Side - Dark */}
           <div className="absolute inset-0 flex">
-            <div className="w-1/2 bg-gradient-to-br from-[#181b39] via-[#181b39]/90 to-[#181b39]/80 relative">
+            <div className={`w-1/2 bg-gradient-to-br from-[#181b39] via-[#181b39]/90 to-[#181b39]/80 relative ${isRTL ? '' : 'order-2'}`}>
               {/* Diagonal cut */}
-              <div className="absolute inset-y-0 -right-12 w-24 bg-gradient-to-br from-[#181b39] via-[#181b39]/90 to-[#181b39]/80 transform skew-x-12"></div>
+              <div className={`absolute inset-y-0 ${isRTL ? '-left-12' : '-right-12'} w-24 bg-gradient-to-br from-[#181b39] via-[#181b39]/90 to-[#181b39]/80 transform ${isRTL ? 'skew-x-12' : '-skew-x-12'}`}></div>
               
               {/* Subtle floating elements */}
               <div className="absolute inset-0">
@@ -122,7 +128,7 @@ export default function AboutPage() {
                     key={i}
                     className="absolute w-1 h-1 bg-white/30 rounded-full"
                     style={{
-                      right: `${particle.right}%`,
+                      [isRTL ? 'right' : 'left']: `${particle.right}%`,
                       top: `${particle.top}%`,
                     }}
                     animate={{
@@ -140,7 +146,7 @@ export default function AboutPage() {
             </div>
             
             {/* Right Side - Light */}
-            <div className="w-1/2 bg-gradient-to-bl from-slate-50 via-white to-gray-100 relative">
+            <div className={`w-1/2 bg-gradient-to-bl from-slate-50 via-white to-gray-100 relative ${isRTL ? '' : 'order-1'}`}>
               <motion.img
                 src="hero/ths.webp"
                 alt="Modern Tohatsu Facility"
@@ -157,8 +163,8 @@ export default function AboutPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center min-h-screen">
               {/* Left Content */}
               <motion.div
-                className="text-white"
-                initial={{ opacity: 0, x: -50 }}
+                className={`text-white ${isRTL ? '' : 'order-2'}`}
+                initial={{ opacity: 0, x: isRTL ? -50 : 50 }}
                 animate={isHeroInView ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
@@ -169,10 +175,10 @@ export default function AboutPage() {
                   }}
                   transition={{ duration: 4, repeat: Infinity }}
                 >
-                  <SparklesIcon className="w-16 h-16 text-[#c2b280] ml-4" />
+                  <SparklesIcon className={`w-16 h-16 text-[#c2b280] ${isRTL ? 'ml-4' : 'mr-4'}`} />
                   <div>
-                    <h1 className="text-5xl md:text-6xl font-bold">قصة</h1>
-                    <h1 className="text-5xl md:text-6xl font-bold text-[#c2b280]">توهاتسو</h1>
+                    <h1 className="text-5xl md:text-6xl font-bold">{t.about.hero.title}</h1>
+                    <h1 className="text-5xl md:text-6xl font-bold text-[#c2b280]">{t.about.hero.titleAccent}</h1>
                   </div>
                 </motion.div>
                 
@@ -182,31 +188,31 @@ export default function AboutPage() {
                   animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ delay: 0.4, duration: 0.8 }}
                 >
-                  رحلة بدأت في اليابان عام 1922، امتدت عبر القارات، ووصلت إلى قلوب البحارة في المملكة العربية السعودية
+                  {t.about.hero.subtitle}
                 </motion.p>
 
                 <motion.div
-                  className="flex items-center space-x-reverse space-x-8"
+                  className={`flex items-center ${isRTL ? 'space-x-reverse space-x-8' : 'space-x-8'}`}
                   initial={{ opacity: 0, y: 20 }}
                   animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ delay: 0.6, duration: 0.8 }}
                 >
                   <div className="text-center">
-                    <div className="text-4xl font-bold text-[#c2b280]">1922</div>
-                    <div className="text-sm opacity-80">سنة التأسيس</div>
+                    <div className="text-4xl font-bold text-[#c2b280]">{t.about.hero.establishedYear}</div>
+                    <div className="text-sm opacity-80">{t.about.hero.establishedLabel}</div>
                   </div>
                   <div className="w-px h-12 bg-white/30"></div>
                   <div className="text-center">
-                    <div className="text-4xl font-bold text-[#c2b280]">100+</div>
-                    <div className="text-sm opacity-80">عام من الخبرة</div>
+                    <div className="text-4xl font-bold text-[#c2b280]">{t.about.hero.experienceYears}</div>
+                    <div className="text-sm opacity-80">{t.about.hero.experienceLabel}</div>
                   </div>
                 </motion.div>
               </motion.div>
 
               {/* Right Content */}
               <motion.div
-                className="relative"
-                initial={{ opacity: 0, x: 50 }}
+                className={`relative ${isRTL ? '' : 'order-1'}`}
+                initial={{ opacity: 0, x: isRTL ? 50 : -50 }}
                 animate={isHeroInView ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.8, delay: 0.4 }}
               >
@@ -221,14 +227,13 @@ export default function AboutPage() {
                       className="text-3xl font-bold mb-6"
                       variants={fadeInUp}
                     >
-                      رؤيتنا للمستقبل
+                      {t.about.hero.visionTitle}
                     </motion.h2>
                     <motion.p 
                       className="text-lg leading-relaxed text-gray-700"
                       variants={fadeInUp}
                     >
-                      نسعى لأن نكون الخيار الأول للبحارة في المنطقة، من خلال تقديم محركات 
-                      بحرية تجمع بين التقنية اليابانية المتقدمة والفهم العميق للاحتياجات المحلية
+                      {t.about.hero.visionText}
                     </motion.p>
                   </motion.div>
                 </div>
@@ -244,7 +249,7 @@ export default function AboutPage() {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          dir="rtl"
+          dir={isRTL ? 'rtl' : 'ltr'}
         >
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
@@ -257,7 +262,7 @@ export default function AboutPage() {
                 transition={{ duration: 0.3 }}
               >
                 <motion.div
-                  className="ml-4"
+                  className={isRTL ? 'ml-4' : 'mr-4'}
                   animate={{ 
                     scale: [1, 1.1, 1],
                   }}
@@ -266,18 +271,18 @@ export default function AboutPage() {
                   <ClockIcon className="w-12 h-12 text-[#c2b280]" />
                 </motion.div>
                 <h2 className="text-4xl md:text-5xl font-bold text-[#181b39]">
-                  رحلة عبر الزمن
+                  {t.about.timeline.title}
                 </h2>
               </motion.div>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                اكتشف المحطات المهمة في تاريخ توهاتسو والإنجازات التي جعلتنا رواد صناعة المحركات البحرية
+                {t.about.timeline.subtitle}
               </p>
             </motion.div>
 
             {/* Timeline */}
             <div className="relative">
               {/* Central Line */}
-              <div className="absolute right-1/2 transform translate-x-1/2 w-1 h-full bg-gradient-to-b from-[#c2b280] to-[#c2b280]/60"></div>
+              <div className={`absolute ${isRTL ? 'right' : 'left'}-1/2 transform ${isRTL ? 'translate-x-1/2' : '-translate-x-1/2'} w-1 h-full bg-gradient-to-b from-[#c2b280] to-[#c2b280]/60`}></div>
 
               <motion.div 
                 className="space-y-16"
@@ -289,82 +294,85 @@ export default function AboutPage() {
                 {[
                   {
                     year: "1922",
-                    title: "البداية في اليابان",
-                    description: "تأسيس شركة توهاتسو في طوكيو، اليابان، مع التركيز على الجودة والابتكار",
+                    title: t.about.timeline.milestones['1922'].title,
+                    description: t.about.timeline.milestones['1922'].description,
                     icon: BuildingOfficeIcon,
                     side: "right"
                   },
                   {
                     year: "1960",
-                    title: "أول محرك بحري",
-                    description: "إطلاق أول محرك بحري خارجي، بداية رحلة توهاتسو في عالم البحار",
+                    title: t.about.timeline.milestones['1960'].title,
+                    description: t.about.timeline.milestones['1960'].description,
                     icon: CogIcon,
                     side: "left"
                   },
                   {
                     year: "1995",
-                    title: "التوسع العالمي",
-                    description: "بداية التوسع في الأسواق العالمية مع التركيز على الجودة اليابانية",
+                    title: t.about.timeline.milestones['1995'].title,
+                    description: t.about.timeline.milestones['1995'].description,
                     icon: GlobeAltIcon,
                     side: "right"
                   },
                   {
                     year: "2010",
-                    title: "تقنيات صديقة للبيئة",
-                    description: "تطوير محركات صديقة للبيئة مع تقنيات توفير الوقود المتقدمة",
+                    title: t.about.timeline.milestones['2010'].title,
+                    description: t.about.timeline.milestones['2010'].description,
                     icon: LightBulbIcon,
                     side: "left"
                   },
                   {
                     year: "2020",
-                    title: "دخول السوق السعودي",
-                    description: "بداية رحلتنا في المملكة العربية السعودية مع التزام بالجودة والخدمة المحلية",
+                    title: t.about.timeline.milestones['2020'].title,
+                    description: t.about.timeline.milestones['2020'].description,
                     icon: HeartIcon,
                     side: "right"
                   }
-                ].map((item, index) => (
-                  <motion.div
-                    key={index}
-                    className={`flex items-center ${item.side === 'right' ? 'flex-row-reverse' : ''}`}
-                    variants={item.side === 'right' ? fadeInRight : fadeInLeft}
-                  >
-                    <div className={`w-1/2 ${item.side === 'right' ? 'pr-16' : 'pl-16'}`}>
-                      <motion.div
-                        className={`bg-white rounded-2xl shadow-lg p-8 relative border border-gray-100 ${item.side === 'right' ? 'text-right' : 'text-left'}`}
-                        whileHover={{ scale: 1.02, y: -3 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        {/* Arrow */}
-                        <div className={`absolute top-8 ${item.side === 'right' ? '-left-4' : '-right-4'} w-0 h-0 border-t-8 border-b-8 border-transparent ${item.side === 'right' ? 'border-r-8 border-r-white' : 'border-l-8 border-l-white'}`}></div>
-                        
-                        <div className={`flex items-center mb-4 ${item.side === 'right' ? 'justify-end' : 'justify-start'}`}>
-                          <motion.div
-                            className="w-12 h-12 bg-gradient-to-bl from-[#c2b280] to-[#c2b280]/80 rounded-xl flex items-center justify-center ml-4"
-                            whileHover={{ scale: 1.1 }}
-                            transition={{ duration: 0.3 }}
-                          >
-                            <item.icon className="w-6 h-6 text-white" />
-                          </motion.div>
-                          <div className="text-3xl font-bold text-[#c2b280]">{item.year}</div>
-                        </div>
-                        
-                        <h3 className="text-2xl font-bold text-[#181b39] mb-3">{item.title}</h3>
-                        <p className="text-gray-600 leading-relaxed">{item.description}</p>
-                      </motion.div>
-                    </div>
-
-                    {/* Center Circle */}
+                ].map((item, index) => {
+                  const actualSide = isRTL ? (item.side === 'right' ? 'left' : 'right') : item.side;
+                  return (
                     <motion.div
-                      className="w-6 h-6 bg-[#c2b280] rounded-full border-4 border-white shadow-lg relative z-10"
-                      initial={{ scale: 0 }}
-                      whileInView={{ scale: 1 }}
-                      transition={{ delay: index * 0.2, duration: 0.5 }}
-                      viewport={{ once: true }}
-                    ></motion.div>
+                      key={index}
+                      className={`flex items-center ${actualSide === 'right' ? 'flex-row-reverse' : ''}`}
+                      variants={actualSide === 'right' ? fadeInRight : fadeInLeft}
+                    >
+                      <div className={`w-1/2 ${actualSide === 'right' ? (isRTL ? 'pl-16' : 'pr-16') : (isRTL ? 'pr-16' : 'pl-16')}`}>
+                        <motion.div
+                          className={`bg-white rounded-2xl shadow-lg p-8 relative border border-gray-100 ${actualSide === 'right' ? (isRTL ? 'text-left' : 'text-right') : (isRTL ? 'text-right' : 'text-left')}`}
+                          whileHover={{ scale: 1.02, y: -3 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          {/* Arrow */}
+                          <div className={`absolute top-8 ${actualSide === 'right' ? (isRTL ? '-right-4' : '-left-4') : (isRTL ? '-left-4' : '-right-4')} w-0 h-0 border-t-8 border-b-8 border-transparent ${actualSide === 'right' ? (isRTL ? 'border-l-8 border-l-white' : 'border-r-8 border-r-white') : (isRTL ? 'border-r-8 border-r-white' : 'border-l-8 border-l-white')}`}></div>
+                          
+                          <div className={`flex items-center mb-4 ${actualSide === 'right' ? (isRTL ? 'justify-start' : 'justify-end') : (isRTL ? 'justify-end' : 'justify-start')}`}>
+                            <motion.div
+                              className={`w-12 h-12 bg-gradient-to-bl from-[#c2b280] to-[#c2b280]/80 rounded-xl flex items-center justify-center ${isRTL ? 'ml-4' : 'mr-4'}`}
+                              whileHover={{ scale: 1.1 }}
+                              transition={{ duration: 0.3 }}
+                            >
+                              <item.icon className="w-6 h-6 text-white" />
+                            </motion.div>
+                            <div className="text-3xl font-bold text-[#c2b280]">{item.year}</div>
+                          </div>
+                          
+                          <h3 className="text-2xl font-bold text-[#181b39] mb-3">{item.title}</h3>
+                          <p className="text-gray-600 leading-relaxed">{item.description}</p>
+                        </motion.div>
+                      </div>
 
-                    <div className="w-1/2"></div>
-                  </motion.div>
-                ))}
+                      {/* Center Circle */}
+                      <motion.div
+                        className="w-6 h-6 bg-[#c2b280] rounded-full border-4 border-white shadow-lg relative z-10"
+                        initial={{ scale: 0 }}
+                        whileInView={{ scale: 1 }}
+                        transition={{ delay: index * 0.2, duration: 0.5 }}
+                        viewport={{ once: true }}
+                      ></motion.div>
+
+                      <div className="w-1/2"></div>
+                    </motion.div>
+                  )
+                })}
               </motion.div>
             </div>
           </div>
@@ -377,7 +385,7 @@ export default function AboutPage() {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          dir="rtl"
+          dir={isRTL ? 'rtl' : 'ltr'}
         >
           {/* Subtle Background Animation */}
           <div className="absolute inset-0">
@@ -386,7 +394,7 @@ export default function AboutPage() {
                 key={i}
                 className="absolute w-1 h-1 bg-white/10 rounded-full"
                 style={{
-                  right: `${particle.right}%`,
+                  [isRTL ? 'right' : 'left']: `${particle.right}%`,
                   top: `${particle.top}%`,
                 }}
                 animate={{
@@ -413,7 +421,7 @@ export default function AboutPage() {
                 transition={{ duration: 0.3 }}
               >
                 <motion.div
-                  className="ml-4"
+                  className={isRTL ? 'ml-4' : 'mr-4'}
                   animate={{ 
                     scale: [1, 1.1, 1],
                   }}
@@ -422,11 +430,11 @@ export default function AboutPage() {
                   <TrophyIcon className="w-12 h-12 text-[#c2b280]" />
                 </motion.div>
                 <h2 className="text-4xl md:text-5xl font-bold">
-                  أرقام تتحدث عن نفسها
+                  {t.about.stats.title}
                 </h2>
               </motion.div>
               <p className="text-xl opacity-90 max-w-3xl mx-auto">
-                إنجازاتنا وحضورنا العالمي في أرقام مؤثرة تعكس التزامنا بالتميز والجودة
+                {t.about.stats.subtitle}
               </p>
             </motion.div>
 
@@ -441,32 +449,32 @@ export default function AboutPage() {
                 {
                   number: 100,
                   suffix: "+",
-                  title: "سنة من الخبرة",
-                  description: "قرن كامل من الابتكار والتطوير",
+                  title: t.about.stats.items.experience.title,
+                  description: t.about.stats.items.experience.description,
                   icon: StarIcon,
                   color: "from-[#c2b280] to-[#c2b280]/80"
                 },
                 {
                   number: 50,
                   suffix: "+",
-                  title: "دولة حول العالم",
-                  description: "حضور عالمي واسع ومتنوع",
+                  title: t.about.stats.items.countries.title,
+                  description: t.about.stats.items.countries.description,
                   icon: GlobeAltIcon,
                   color: "from-[#181b39] to-[#181b39]/80"
                 },
                 {
                   number: 1000000,
                   suffix: "+",
-                  title: "محرك مُنتج",
-                  description: "ملايين المحركات الموثوقة",
+                  title: t.about.stats.items.engines.title,
+                  description: t.about.stats.items.engines.description,
                   icon: CogIcon,
                   color: "from-slate-600 to-slate-700"
                 },
                 {
                   number: 95,
                   suffix: "%",
-                  title: "رضا العملاء",
-                  description: "ثقة العملاء في جودتنا",
+                  title: t.about.stats.items.satisfaction.title,
+                  description: t.about.stats.items.satisfaction.description,
                   icon: HeartIcon,
                   color: "from-[#c2b280]/80 to-[#c2b280]/60"
                 }
@@ -510,7 +518,7 @@ export default function AboutPage() {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          dir="rtl"
+          dir={isRTL ? 'rtl' : 'ltr'}
         >
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
@@ -523,7 +531,7 @@ export default function AboutPage() {
                 transition={{ duration: 0.3 }}
               >
                 <motion.div
-                  className="ml-4"
+                  className={isRTL ? 'ml-4' : 'mr-4'}
                   animate={{ 
                     scale: [1, 1.05, 1],
                   }}
@@ -532,11 +540,11 @@ export default function AboutPage() {
                   <RocketLaunchIcon className="w-12 h-12 text-[#c2b280]" />
                 </motion.div>
                 <h2 className="text-4xl md:text-5xl font-bold text-[#181b39]">
-                  الابتكار والتقنية
+                  {t.about.innovation.title}
                 </h2>
               </motion.div>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                نلتزم بالبحث والتطوير المستمر لتقديم أحدث التقنيات في عالم المحركات البحرية
+                {t.about.innovation.subtitle}
               </p>
             </motion.div>
 
@@ -550,21 +558,21 @@ export default function AboutPage() {
               {[
                 {
                   icon: BoltIcon,
-                  title: "تقنية SIMPLIQ™",
-                  description: "تقنية متطورة تهدف إلى توفير تجربة قيادة بسيطة وموثوقة مع أداء استثنائي",
-                  features: ["سهولة الاستخدام", "كفاءة عالية", "صيانة مبسطة"]
+                  title: t.about.innovation.technologies.simpliq.title,
+                  description: t.about.innovation.technologies.simpliq.description,
+                  features: t.about.innovation.technologies.simpliq.features
                 },
                 {
                   icon: ShieldCheckIcon,
-                  title: "نظام الحماية الذكي",
-                  description: "أنظمة حماية متطورة تراقب أداء المحرك وتحمي من التلف في الظروف القاسية",
-                  features: ["حماية من الحرارة", "إنذار مبكر", "حماية ذاتية"]
+                  title: t.about.innovation.technologies.protection.title,
+                  description: t.about.innovation.technologies.protection.description,
+                  features: t.about.innovation.technologies.protection.features
                 },
                 {
                   icon: ChartBarIcon,
-                  title: "كفاءة الوقود المتقدمة",
-                  description: "تقنيات متطورة لتحسين استهلاك الوقود وتقليل الانبعاثات البيئية",
-                  features: ["توفير في الوقود", "انبعاثات منخفضة", "أداء محسن"]
+                  title: t.about.innovation.technologies.efficiency.title,
+                  description: t.about.innovation.technologies.efficiency.description,
+                  features: t.about.innovation.technologies.efficiency.features
                 }
               ].map((innovation, index) => (
                 <motion.div
@@ -592,7 +600,7 @@ export default function AboutPage() {
                   <div className="space-y-2">
                     {innovation.features.map((feature, featureIndex) => (
                       <div key={featureIndex} className="flex items-center">
-                        <CheckCircleIcon className="w-5 h-5 text-emerald-500 ml-2" />
+                        <CheckCircleIcon className={`w-5 h-5 text-emerald-500 ${isRTL ? 'ml-2' : 'mr-2'}`} />
                         <span className="text-gray-700 font-medium">{feature}</span>
                       </div>
                     ))}
@@ -610,7 +618,7 @@ export default function AboutPage() {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          dir="rtl"
+          dir={isRTL ? 'rtl' : 'ltr'}
         >
           <div className="absolute inset-0">
             {ctaParticles.map((particle, i) => (
@@ -618,7 +626,7 @@ export default function AboutPage() {
                 key={i}
                 className="absolute w-20 h-20 border border-white/10 rounded-full"
                 style={{
-                  right: `${particle.right}%`,
+                  [isRTL ? 'right' : 'left']: `${particle.right}%`,
                   top: `${particle.top}%`,
                 }}
                 animate={{
@@ -647,7 +655,7 @@ export default function AboutPage() {
                 variants={fadeInUp}
               >
                 <motion.div
-                  className="ml-4"
+                  className={isRTL ? 'ml-4' : 'mr-4'}
                   animate={{ 
                     scale: [1, 1.1, 1],
                   }}
@@ -656,7 +664,7 @@ export default function AboutPage() {
                   <HeartIcon className="w-16 h-16 text-[#c2b280]" />
                 </motion.div>
                 <h2 className="text-4xl md:text-6xl font-bold">
-                  انضم إلى عائلة توهاتسو
+                  {t.about.cta.title}
                 </h2>
               </motion.div>
               
@@ -664,8 +672,7 @@ export default function AboutPage() {
                 className="text-xl md:text-2xl mb-12 leading-relaxed opacity-90"
                 variants={fadeInUp}
               >
-                اكتشف الفرق الذي يحدثه أكثر من قرن من الخبرة والابتكار في كل رحلة بحرية. 
-                نحن لا نصنع محركات فحسب، بل نخلق ذكريات تدوم مدى الحياة.
+                {t.about.cta.subtitle}
               </motion.p>
               
               <motion.div 
@@ -678,7 +685,7 @@ export default function AboutPage() {
                   {...scaleOnHover}
                 >
                   <motion.div
-                    className="mr-3"
+                    className={isRTL ? 'mr-3' : 'ml-3'}
                     animate={{ 
                       scale: [1, 1.05, 1],
                     }}
@@ -686,7 +693,7 @@ export default function AboutPage() {
                   >
                     <ChatBubbleLeftRightIcon className="w-6 h-6" />
                   </motion.div>
-                  تحدث معنا
+                  {t.about.cta.talkToUs}
                 </motion.a>
                 
                 <motion.a
@@ -695,15 +702,15 @@ export default function AboutPage() {
                   {...scaleOnHover}
                 >
                   <motion.div
-                    className="mr-3"
+                    className={isRTL ? 'mr-3' : 'ml-3'}
                     animate={{ 
-                      x: [0, 3, 0],
+                      x: [0, isRTL ? -3 : 3, 0],
                     }}
                     transition={{ duration: 2, repeat: Infinity }}
                   >
                     <ArrowTrendingUpIcon className="w-6 h-6" />
                   </motion.div>
-                  اكتشف منتجاتنا
+                  {t.about.cta.discoverProducts}
                 </motion.a>
               </motion.div>
             </motion.div>

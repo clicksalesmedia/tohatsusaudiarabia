@@ -6,12 +6,17 @@ import { ChevronDownIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outli
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useLanguage } from '../contexts/LanguageContext'
+import { useTranslations } from '../translations'
+import LanguageSwitcher from './LanguageSwitcher'
 
 const Header = () => {
   const [isProductsDropdownOpen, setIsProductsDropdownOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
+  const { language, isRTL } = useLanguage()
+  const t = useTranslations(language)
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -26,20 +31,20 @@ const Header = () => {
   }, [])
 
   const navigationItems = [
-    { name: "الرئيسية", href: "/" },
-    { name: "عن توهاتسو", href: "/about" },
+    { name: t.nav.home, href: "/" },
+    { name: t.nav.about, href: "/about" },
     { 
-      name: "المنتجات", 
+      name: t.nav.products, 
       href: "/products", 
       dropdown: true,
       dropdownItems: [
-        { name: "محركات محمولة (2.5-20 حصان)", href: "/products/portable-engines" },
-        { name: "محركات متوسطة (25-90 حصان)", href: "/products/mid-range-engines" },
-        { name: "محركات عالية القوة (100-140 حصان)", href: "/products/high-power-engines" }
+        { name: `${t.products.portable.title} (${t.products.portable.power})`, href: "/products/portable-engines" },
+        { name: `${t.products.midRange.title} (${t.products.midRange.power})`, href: "/products/mid-range-engines" },
+        { name: `${t.products.highPower.title} (${t.products.highPower.power})`, href: "/products/high-power-engines" }
       ]
     },
-    { name: "البحث عن وكيل", href: "/dealer-locator" },
-    { name: "اتصل بنا", href: "/contact" }
+    { name: t.nav.dealers, href: "/dealer-locator" },
+    { name: t.nav.contact, href: "/contact" }
   ]
 
   // Function to check if item is active (only on client side)
@@ -101,7 +106,7 @@ const Header = () => {
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
       className="bg-white/95 backdrop-blur-md shadow-lg sticky top-0 z-50 border-b border-gray-100"
-      dir="rtl"
+      dir={isRTL ? "rtl" : "ltr"}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
@@ -116,8 +121,8 @@ const Header = () => {
             />
           </Link>
           
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-0 space-x-reverse">
+          {/* Desktop Navigation - Centered */}
+          <nav className="hidden lg:flex items-center justify-center flex-1">
             <div className="flex items-center gap-8">
               {navigationItems.map((item, index) => (
                 <motion.div
@@ -155,13 +160,15 @@ const Header = () => {
                             className="absolute right-0 top-full mt-2 w-80 bg-white rounded-xl shadow-2xl py-3 z-20 border border-gray-100 overflow-hidden"
                           >
                             <div className="px-4 py-2 border-b border-gray-100">
-                              <p className="text-sm font-semibold text-[#181b39] text-right">اختر فئة المحركات</p>
+                              <p className={`text-sm font-semibold text-[#181b39] ${isRTL ? 'text-right' : 'text-left'}`}>
+                                {language === 'ar' ? 'اختر فئة المحركات' : 'Choose Engine Category'}
+                              </p>
                             </div>
                             {item.dropdownItems?.map((dropdownItem, idx) => (
                               <motion.a
                                 key={dropdownItem.name}
                                 href={dropdownItem.href}
-                                className="block px-6 py-3 text-sm text-gray-700 hover:bg-gradient-to-l hover:from-[#c2b280]/20 hover:to-[#c2b280]/10 hover:text-[#181b39] transition-all duration-200 text-right group relative overflow-hidden"
+                                className={`block px-6 py-3 text-sm text-gray-700 hover:bg-gradient-to-l hover:from-[#c2b280]/20 hover:to-[#c2b280]/10 hover:text-[#181b39] transition-all duration-200 ${isRTL ? 'text-right' : 'text-left'} group relative overflow-hidden`}
                                 initial={{ opacity: 0, x: 20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: idx * 0.1, duration: 0.3 }}
@@ -204,6 +211,11 @@ const Header = () => {
               ))}
             </div>
           </nav>
+
+          {/* Language Switcher - Right side */}
+          <div className="hidden lg:flex items-center">
+            <LanguageSwitcher />
+          </div>
 
           {/* Mobile menu button */}
           <motion.div 
@@ -254,9 +266,13 @@ const Header = () => {
             animate="visible"
             exit="hidden"
             className="lg:hidden bg-white/95 backdrop-blur-md shadow-xl border-t border-gray-200 overflow-hidden"
-            dir="rtl"
+            dir={isRTL ? "rtl" : "ltr"}
           >
             <div className="px-4 pt-4 pb-6 space-y-1">
+              {/* Mobile Language Switcher */}
+              <div className="px-4 py-3 border-b border-gray-200 mb-2">
+                <LanguageSwitcher />
+              </div>
               {navigationItems.map((item, index) => (
                 <motion.div
                   key={item.name}
@@ -267,14 +283,14 @@ const Header = () => {
                 >
                   {item.dropdown ? (
                     <div className="space-y-1">
-                      <div className="px-4 py-2 text-sm font-semibold text-[#181b39] border-b border-gray-100 text-right">
+                      <div className={`px-4 py-2 text-sm font-semibold text-[#181b39] border-b border-gray-100 ${isRTL ? 'text-right' : 'text-left'}`}>
                         {item.name}
                       </div>
                       {item.dropdownItems?.map((dropdownItem, idx) => (
                         <motion.a
                           key={dropdownItem.name}
                           href={dropdownItem.href}
-                          className="block px-6 py-3 rounded-lg text-base font-medium text-gray-700 hover:bg-gradient-to-l hover:from-[#c2b280]/20 hover:to-[#c2b280]/10 hover:text-[#181b39] transition-all duration-200 text-right mr-4"
+                          className={`block px-6 py-3 rounded-lg text-base font-medium text-gray-700 hover:bg-gradient-to-l hover:from-[#c2b280]/20 hover:to-[#c2b280]/10 hover:text-[#181b39] transition-all duration-200 ${isRTL ? 'text-right mr-4' : 'text-left ml-4'}`}
                           initial={{ opacity: 0, x: 20 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: (index + idx) * 0.05, duration: 0.3 }}
@@ -288,7 +304,7 @@ const Header = () => {
                   ) : (
                     <motion.a
                       href={item.href}
-                      className={`block px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 text-right ${
+                      className={`block px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 ${isRTL ? 'text-right' : 'text-left'} ${
                         isItemActive(item.href)
                           ? "bg-gradient-to-l from-[#c2b280]/20 to-[#c2b280]/10 text-[#181b39]"
                           : "text-gray-700 hover:bg-gradient-to-l hover:from-[#c2b280]/20 hover:to-[#c2b280]/10 hover:text-[#181b39]"

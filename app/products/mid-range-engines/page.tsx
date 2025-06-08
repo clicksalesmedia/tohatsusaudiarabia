@@ -5,6 +5,7 @@ import { useRef, useState } from 'react'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 import { useParticles } from '../../utils/particlePositions'
+import { useLanguage } from '../../contexts/LanguageContext'
 import { 
   PaperAirplaneIcon,
   ShieldCheckIcon,
@@ -42,74 +43,236 @@ const scaleOnHover = {
   whileTap: { scale: 0.95 }
 }
 
+type EngineKey = '25hp' | '40hp' | '60hp' | '90hp'
+
+interface EngineData {
+  name: string
+  power: string
+  type: string
+  weight: string
+  displacement: string
+  fuel: string
+  features: string[]
+  ideal: string
+}
+
+interface ContentData {
+  pageTitle: string
+  powerRange: string
+  heroDescription: string
+  heroBadges: string[]
+  featuresTitle: string
+  features: Array<{
+    title: string
+    description: string
+  }>
+  engineSelectorTitle: string
+  engines: Record<EngineKey, EngineData>
+  specLabels: {
+    type: string
+    weight: string
+    displacement: string
+    fuelTank: string
+  }
+  keyFeatures: string
+  idealFor: string
+  inquireNow: string
+  requestQuote: string
+  ctaTitle: string
+  ctaDescription: string
+  consultExperts: string
+  browseOther: string
+}
+
 export default function MidRangeEnginesPage() {
   const heroRef = useRef(null)
   const isHeroInView = useInView(heroRef, { once: true })
-  const [selectedEngine, setSelectedEngine] = useState('25hp')
+  const [selectedEngine, setSelectedEngine] = useState<EngineKey>('25hp')
+  const { language, isRTL } = useLanguage()
 
   // Use consistent particle positions to prevent hydration errors
   const heroParticles = useParticles(20, 'mid-range-hero')
   const ctaParticles = useParticles(15, 'mid-range-cta')
 
-  const engines: Record<string, {
-    name: string;
-    power: string;
-    type: string;
-    weight: string;
-    displacement: string;
-    fuel: string;
-    features: string[];
-    ideal: string;
-    image: string;
-  }> = {
-    '25hp': {
-      name: 'توهاتسو 25 حصان',
-      power: '25 حصان',
-      type: '4 أشواط',
-      weight: '55 كجم',
-      displacement: '526 سم³',
-      fuel: '25 لتر',
-      features: ['قوة متوازنة وكفاءة عالية', 'تحكم دقيق في السرعة', 'نظام تبريد متقدم', 'صيانة سهلة'],
-      ideal: 'القوارب من 4-6 أمتار والاستخدامات التجارية',
-      image: '/products/mid/tohatsu25.png'
+  const content: Record<'ar' | 'en', ContentData> = {
+    ar: {
+      pageTitle: 'المحركات المتوسطة',
+      powerRange: '25 - 90 حصان',
+      heroDescription: 'الأداء المثالي لمغامراتك المتنوعة. التوازن المثالي بين القوة والكفاءة للتطبيقات المتعددة',
+      heroBadges: [
+        '🏆 أداء متوازن وموثوق',
+        '⚡ كفاءة عالية في الوقود',
+        '🛡️ تكنولوجيا يابانية متطورة'
+      ],
+      featuresTitle: 'مزايا المحركات المتوسطة',
+      features: [
+        {
+          title: 'قوة متطورة',
+          description: 'أداء قوي ومتوازن مثالي للقوارب المتوسطة والكبيرة'
+        },
+        {
+          title: 'تقنيات ذكية',
+          description: 'أنظمة تحكم إلكترونية متطورة وحقن وقود دقيق'
+        },
+        {
+          title: 'موثوقية عالية',
+          description: 'أنظمة حماية متطورة وأداء ثابت في جميع الظروف'
+        },
+        {
+          title: 'صيانة سهلة',
+          description: 'تصميم عملي يسهل الوصول للمكونات والصيانة الدورية'
+        }
+      ],
+      engineSelectorTitle: 'اختر المحرك المناسب لك',
+      engines: {
+        '25hp': {
+          name: 'توهاتسو 25 حصان',
+          power: '25 حصان',
+          type: '4 أشواط',
+          weight: '55 كجم',
+          displacement: '526 سم³',
+          fuel: '25 لتر',
+          features: ['قوة متوازنة وكفاءة عالية', 'تحكم دقيق في السرعة', 'نظام تبريد متطور', 'صيانة سهلة'],
+          ideal: 'القوارب من 4-6 أمتار والتطبيقات التجارية'
+        },
+        '40hp': {
+          name: 'توهاتسو 40 حصان',
+          power: '40 حصان',
+          type: '4 أشواط',
+          weight: '85 كجم',
+          displacement: '747 سم³',
+          fuel: '25 لتر',
+          features: ['أداء قوي للقوارب المتوسطة', 'تقنية حقن الوقود الإلكتروني', 'نظام إنذار متطور', 'تشغيل موثوق'],
+          ideal: 'قوارب الصيد التجارية وقوارب النزهة'
+        },
+        '60hp': {
+          name: 'توهاتسو 60 حصان',
+          power: '60 حصان',
+          type: '4 أشواط',
+          weight: '112 كجم',
+          displacement: '996 سم³',
+          fuel: '25 لتر',
+          features: ['عزم دوران عالي', 'نظام تحكم إلكتروني', 'كفاءة ممتازة في الوقود', 'تبريد بضغط الماء'],
+          ideal: 'القوارب الرياضية والتجارية المتوسطة'
+        },
+        '90hp': {
+          name: 'توهاتسو 90 حصان',
+          power: '90 حصان',
+          type: '4 أشواط',
+          weight: '150 كجم',
+          displacement: '1351 سم³',
+          fuel: '25 لتر',
+          features: ['أقوى محرك في الفئة المتوسطة', 'تقنية حقن متطورة', 'أداء سرعة فائق', 'نظام حماية شامل'],
+          ideal: 'القوارب الكبيرة والتطبيقات المهنية'
+        }
+      },
+      specLabels: {
+        type: 'النوع',
+        weight: 'الوزن',
+        displacement: 'السعة',
+        fuelTank: 'خزان الوقود'
+      },
+      keyFeatures: 'الميزات الرئيسية',
+      idealFor: 'مثالي لـ:',
+      inquireNow: 'استفسر الآن',
+      requestQuote: 'اطلب عرض سعر',
+      ctaTitle: 'القوة المثالية لمغامراتك',
+      ctaDescription: 'اختر المحرك المتوسط المثالي واستمتع بالتوازن المثالي بين القوة والكفاءة. فريق الخبراء لدينا جاهز لإرشادك للخيار الأنسب.',
+      consultExperts: 'استشر خبراءنا',
+      browseOther: 'تصفح المحركات الأخرى'
     },
-    '40hp': {
-      name: 'توهاتسو 40 حصان',
-      power: '40 حصان',
-      type: '4 أشواط',
-      weight: '85 كجم',
-      displacement: '747 سم³',
-      fuel: '25 لتر',
-      features: ['أداء قوي للقوارب المتوسطة', 'تقنية الحقن الإلكتروني', 'نظام إنذار متطور', 'تشغيل موثوق'],
-      ideal: 'قوارب الصيد التجاري وقوارب النزهة',
-      image: '/products/mid/tohatsu40.png'
-    },
-    '60hp': {
-      name: 'توهاتسو 60 حصان',
-      power: '60 حصان',
-      type: '4 أشواط',
-      weight: '112 كجم',
-      displacement: '996 سم³',
-      fuel: '25 لتر',
-      features: ['عزم دوران عالي', 'نظام تحكم إلكتروني', 'كفاءة وقود ممتازة', 'تبريد بضغط الماء'],
-      ideal: 'القوارب الرياضية والتجارية المتوسطة',
-      image: '/products/mid/tohatsu60.png'
-    },
-    '90hp': {
-      name: 'توهاتسو 90 حصان',
-      power: '90 حصان',
-      type: '4 أشواط',
-      weight: '150 كجم',
-      displacement: '1351 سم³',
-      fuel: '25 لتر',
-      features: ['أقوى محركات الفئة المتوسطة', 'تقنية الحقن المتقدمة', 'أداء فائق في السرعة', 'نظام حماية شامل'],
-      ideal: 'القوارب الكبيرة والاستخدامات المهنية',
-      image: '/products/mid/tohatsu90.png'
+    en: {
+      pageTitle: 'Mid-Range Engines',
+      powerRange: '25 - 90 HP',
+      heroDescription: 'Perfect performance for your diverse adventures. Ideal balance between power and efficiency for multiple applications',
+      heroBadges: [
+        '🏆 Balanced and reliable performance',
+        '⚡ High fuel efficiency',
+        '🛡️ Advanced Japanese technology'
+      ],
+      featuresTitle: 'Mid-Range Engine Advantages',
+      features: [
+        {
+          title: 'Advanced Power',
+          description: 'Powerful and balanced performance ideal for medium and large boats'
+        },
+        {
+          title: 'Smart Technologies',
+          description: 'Advanced electronic control systems and precise fuel injection'
+        },
+        {
+          title: 'High Reliability',
+          description: 'Advanced protection systems and consistent performance in all conditions'
+        },
+        {
+          title: 'Easy Maintenance',
+          description: 'Practical design that facilitates component access and routine maintenance'
+        }
+      ],
+      engineSelectorTitle: 'Choose the Right Engine for You',
+      engines: {
+        '25hp': {
+          name: 'Tohatsu 25 HP',
+          power: '25 HP',
+          type: '4-Stroke',
+          weight: '55 kg',
+          displacement: '526 cc',
+          fuel: '25 L',
+          features: ['Balanced power and high efficiency', 'Precise speed control', 'Advanced cooling system', 'Easy maintenance'],
+          ideal: 'Boats from 4-6 meters and commercial applications'
+        },
+        '40hp': {
+          name: 'Tohatsu 40 HP',
+          power: '40 HP',
+          type: '4-Stroke',
+          weight: '85 kg',
+          displacement: '747 cc',
+          fuel: '25 L',
+          features: ['Powerful performance for medium boats', 'Electronic fuel injection technology', 'Advanced warning system', 'Reliable operation'],
+          ideal: 'Commercial fishing boats and pleasure boats'
+        },
+        '60hp': {
+          name: 'Tohatsu 60 HP',
+          power: '60 HP',
+          type: '4-Stroke',
+          weight: '112 kg',
+          displacement: '996 cc',
+          fuel: '25 L',
+          features: ['High torque', 'Electronic control system', 'Excellent fuel efficiency', 'Water pressure cooling'],
+          ideal: 'Medium sport and commercial boats'
+        },
+        '90hp': {
+          name: 'Tohatsu 90 HP',
+          power: '90 HP',
+          type: '4-Stroke',
+          weight: '150 kg',
+          displacement: '1351 cc',
+          fuel: '25 L',
+          features: ['Most powerful mid-range engine', 'Advanced injection technology', 'Superior speed performance', 'Comprehensive protection system'],
+          ideal: 'Large boats and professional applications'
+        }
+      },
+      specLabels: {
+        type: 'Type',
+        weight: 'Weight',
+        displacement: 'Displacement',
+        fuelTank: 'Fuel Tank'
+      },
+      keyFeatures: 'Key Features',
+      idealFor: 'Ideal for:',
+      inquireNow: 'Inquire Now',
+      requestQuote: 'Request Quote',
+      ctaTitle: 'Perfect Power for Your Adventures',
+      ctaDescription: 'Choose your ideal mid-range engine and enjoy perfect balance between power and efficiency. Our expert team is ready to guide you to the most suitable option.',
+      consultExperts: 'Consult Our Experts',
+      browseOther: 'Browse Other Engines'
     }
   }
 
+  const currentContent = content[language]
+
   return (
-    <div dir="rtl" className="font-sans">
+    <div dir={isRTL ? 'rtl' : 'ltr'} className="font-sans">
       <Header />
 
       <main>
@@ -120,7 +283,7 @@ export default function MidRangeEnginesPage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
-          dir="rtl"
+          dir={isRTL ? 'rtl' : 'ltr'}
         >
           {/* Enhanced Background with proper layering */}
           <div className="absolute inset-0">
@@ -143,7 +306,7 @@ export default function MidRangeEnginesPage() {
                 key={i}
                 className="absolute w-2 h-2 bg-white/20 rounded-full"
                 style={{
-                  right: `${particle.right}%`,
+                  [isRTL ? 'left' : 'right']: `${particle.right}%`,
                   top: `${particle.top}%`,
                 }}
                 animate={{
@@ -172,7 +335,7 @@ export default function MidRangeEnginesPage() {
               transition={{ delay: 0.2, duration: 0.8 }}
             >
               <motion.div
-                className="ml-4"
+                className={isRTL ? "ml-4" : "mr-4"}
                 animate={{ 
                   scale: [1, 1.1, 1],
                 }}
@@ -180,12 +343,12 @@ export default function MidRangeEnginesPage() {
               >
                 <PaperAirplaneIcon className="w-16 h-16 text-[#c2b280]" />
               </motion.div>
-              <div className="text-right">
+              <div className={`text-${isRTL ? 'right' : 'left'}`}>
                 <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight">
-                  المحركات المتوسطة
+                  {currentContent.pageTitle}
                 </h1>
                 <h2 className="text-2xl sm:text-3xl font-bold text-[#c2b280]">
-                  25 - 90 حصان
+                  {currentContent.powerRange}
                 </h2>
               </div>
             </motion.div>
@@ -196,7 +359,7 @@ export default function MidRangeEnginesPage() {
               animate={isHeroInView ? { y: 0, opacity: 1 } : {}}
               transition={{ delay: 0.4, duration: 0.8 }}
             >
-              الأداء المثالي لمغامراتك المتنوعة. توازن مثالي بين القوة والكفاءة للاستخدامات المتعددة
+              {currentContent.heroDescription}
             </motion.p>
 
             <motion.div
@@ -205,15 +368,11 @@ export default function MidRangeEnginesPage() {
               animate={isHeroInView ? { y: 0, opacity: 1 } : {}}
               transition={{ delay: 0.6, duration: 0.8 }}
             >
-              <div className="bg-white/20 backdrop-blur-sm rounded-full px-4 py-2">
-                🏆 أداء متوازن وموثوق
-              </div>
-              <div className="bg-white/20 backdrop-blur-sm rounded-full px-4 py-2">
-                ⚡ كفاءة عالية في الوقود
-              </div>
-              <div className="bg-white/20 backdrop-blur-sm rounded-full px-4 py-2">
-                🛡️ تقنية يابانية متقدمة
-              </div>
+              {currentContent.heroBadges.map((badge, index) => (
+                <div key={index} className="bg-white/20 backdrop-blur-sm rounded-full px-4 py-2">
+                  {badge}
+                </div>
+              ))}
             </motion.div>
           </motion.div>
         </motion.section>
@@ -225,7 +384,7 @@ export default function MidRangeEnginesPage() {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          dir="rtl"
+          dir={isRTL ? 'rtl' : 'ltr'}
         >
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
@@ -238,7 +397,7 @@ export default function MidRangeEnginesPage() {
                 transition={{ duration: 0.3 }}
               >
                 <motion.div
-                  className="ml-4"
+                  className={isRTL ? "ml-4" : "mr-4"}
                   animate={{ 
                     scale: [1, 1.2, 1],
                   }}
@@ -247,7 +406,7 @@ export default function MidRangeEnginesPage() {
                   <SparklesIcon className="w-12 h-12 text-[#c2b280]" />
                 </motion.div>
                 <h2 className="text-4xl md:text-5xl font-bold text-[#181b39]">
-                  مزايا المحركات المتوسطة
+                  {currentContent.featuresTitle}
                 </h2>
               </motion.div>
             </motion.div>
@@ -259,56 +418,41 @@ export default function MidRangeEnginesPage() {
               whileInView="animate"
               viewport={{ once: true }}
             >
-              {[
-                {
-                  icon: FireIcon,
-                  title: "قوة متطورة",
-                  description: "أداء قوي ومتوازن مثالي للقوارب المتوسطة والكبيرة",
-                  color: "from-[#181b39] to-[#181b39]/80"
-                },
-                {
-                  icon: BoltIcon,
-                  title: "تقنيات ذكية",
-                  description: "أنظمة تحكم إلكترونية متقدمة وحقن وقود دقيق",
-                  color: "from-[#c2b280] to-[#c2b280]/80"
-                },
-                {
-                  icon: ShieldCheckIcon,
-                  title: "موثوقية عالية",
-                  description: "أنظمة حماية متقدمة وأداء ثابت في جميع الظروف",
-                  color: "from-slate-600 to-slate-700"
-                },
-                {
-                  icon: WrenchScrewdriverIcon,
-                  title: "سهولة الصيانة",
-                  description: "تصميم عملي يسهل الوصول للمكونات والصيانة الدورية",
-                  color: "from-slate-500 to-slate-600"
-                }
-              ].map((feature, index) => (
-                <motion.div
-                  key={index}
-                  className="group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 relative overflow-hidden p-8 text-center"
-                  variants={fadeInUp}
-                  {...scaleOnHover}
-                >
-                  <div className={`absolute inset-0 bg-gradient-to-bl ${feature.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500`} />
-                  
+              {currentContent.features.map((feature, index) => {
+                const icons = [FireIcon, BoltIcon, ShieldCheckIcon, WrenchScrewdriverIcon]
+                const colors = [
+                  "from-[#181b39] to-[#181b39]/80",
+                  "from-[#c2b280] to-[#c2b280]/80",
+                  "from-slate-600 to-slate-700",
+                  "from-slate-500 to-slate-600"
+                ]
+                const FeatureIcon = icons[index]
+                return (
                   <motion.div
-                    className={`w-20 h-20 bg-gradient-to-bl ${feature.color} rounded-2xl mx-auto mb-6 flex items-center justify-center relative`}
-                    whileHover={{ rotate: 360 }}
-                    transition={{ duration: 0.6 }}
+                    key={index}
+                    className="group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 relative overflow-hidden p-8 text-center"
+                    variants={fadeInUp}
+                    {...scaleOnHover}
                   >
-                    <feature.icon className="w-10 h-10 text-white" />
+                    <div className={`absolute inset-0 bg-gradient-to-bl ${colors[index]} opacity-0 group-hover:opacity-5 transition-opacity duration-500`} />
+                    
+                    <motion.div
+                      className={`w-20 h-20 bg-gradient-to-bl ${colors[index]} rounded-2xl mx-auto mb-6 flex items-center justify-center relative`}
+                      whileHover={{ rotate: 360 }}
+                      transition={{ duration: 0.6 }}
+                    >
+                      <FeatureIcon className="w-10 h-10 text-white" />
+                    </motion.div>
+                    
+                    <h3 className="text-2xl font-bold text-[#181b39] mb-4 group-hover:text-[#c2b280] transition-colors duration-300">
+                      {feature.title}
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      {feature.description}
+                    </p>
                   </motion.div>
-                  
-                  <h3 className="text-2xl font-bold text-[#181b39] mb-4 group-hover:text-[#c2b280] transition-colors duration-300">
-                    {feature.title}
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    {feature.description}
-                  </p>
-                </motion.div>
-              ))}
+                )
+              })}
             </motion.div>
           </div>
         </motion.section>
@@ -320,7 +464,7 @@ export default function MidRangeEnginesPage() {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          dir="rtl"
+          dir={isRTL ? 'rtl' : 'ltr'}
         >
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
@@ -333,7 +477,7 @@ export default function MidRangeEnginesPage() {
                 transition={{ duration: 0.3 }}
               >
                 <motion.div
-                  className="ml-4"
+                  className={isRTL ? "ml-4" : "mr-4"}
                   animate={{ 
                     rotateY: [0, 180, 0],
                   }}
@@ -342,7 +486,7 @@ export default function MidRangeEnginesPage() {
                   <CogIcon className="w-12 h-12 text-[#c2b280]" />
                 </motion.div>
                 <h2 className="text-4xl md:text-5xl font-bold text-[#181b39]">
-                  اختر المحرك المناسب لك
+                  {currentContent.engineSelectorTitle}
                 </h2>
               </motion.div>
             </motion.div>
@@ -355,7 +499,7 @@ export default function MidRangeEnginesPage() {
               whileInView="animate"
               viewport={{ once: true }}
             >
-              {Object.keys(engines).map((key) => (
+              {(Object.keys(currentContent.engines) as EngineKey[]).map((key) => (
                 <motion.button
                   key={key}
                   className={`px-6 py-3 rounded-xl font-bold transition-all duration-300 ${
@@ -368,7 +512,7 @@ export default function MidRangeEnginesPage() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  {engines[key].power}
+                  {currentContent.engines[key].power}
                 </motion.button>
               ))}
             </motion.div>
@@ -384,21 +528,21 @@ export default function MidRangeEnginesPage() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
                 <div className="relative h-96 lg:h-auto bg-gradient-to-bl from-gray-100 to-gray-200 flex items-center justify-center">
                   <motion.img
-                    src={engines[selectedEngine].image}
-                    alt={engines[selectedEngine].name}
+                    src={`/products/mid/tohatsu${selectedEngine.replace('hp', '')}.png`}
+                    alt={currentContent.engines[selectedEngine].name}
                     className="w-full h-full object-cover"
                     initial={{ scale: 1.1 }}
                     animate={{ scale: 1 }}
                     transition={{ duration: 0.6 }}
                   />
-                  <div className="absolute top-6 right-6">
+                  <div className={`absolute top-6 ${isRTL ? 'left-6' : 'right-6'}`}>
                     <motion.div
                       className="bg-[#c2b280] text-white px-4 py-2 rounded-full font-bold"
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       transition={{ delay: 0.3, duration: 0.5 }}
                     >
-                      {engines[selectedEngine].power}
+                      {currentContent.engines[selectedEngine].power}
                     </motion.div>
                   </div>
                 </div>
@@ -410,7 +554,7 @@ export default function MidRangeEnginesPage() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2, duration: 0.5 }}
                   >
-                    {engines[selectedEngine].name}
+                    {currentContent.engines[selectedEngine].name}
                   </motion.h3>
 
                   <motion.div 
@@ -420,20 +564,20 @@ export default function MidRangeEnginesPage() {
                     transition={{ delay: 0.3, duration: 0.5 }}
                   >
                     <div className="bg-gray-50 rounded-xl p-4">
-                      <div className="text-sm text-gray-600 mb-1">النوع</div>
-                      <div className="font-bold text-[#181b39]">{engines[selectedEngine].type}</div>
+                      <div className="text-sm text-gray-600 mb-1">{currentContent.specLabels.type}</div>
+                      <div className="font-bold text-[#181b39]">{currentContent.engines[selectedEngine].type}</div>
                     </div>
                     <div className="bg-gray-50 rounded-xl p-4">
-                      <div className="text-sm text-gray-600 mb-1">الوزن</div>
-                      <div className="font-bold text-[#181b39]">{engines[selectedEngine].weight}</div>
+                      <div className="text-sm text-gray-600 mb-1">{currentContent.specLabels.weight}</div>
+                      <div className="font-bold text-[#181b39]">{currentContent.engines[selectedEngine].weight}</div>
                     </div>
                     <div className="bg-gray-50 rounded-xl p-4">
-                      <div className="text-sm text-gray-600 mb-1">السعة</div>
-                      <div className="font-bold text-[#181b39]">{engines[selectedEngine].displacement}</div>
+                      <div className="text-sm text-gray-600 mb-1">{currentContent.specLabels.displacement}</div>
+                      <div className="font-bold text-[#181b39]">{currentContent.engines[selectedEngine].displacement}</div>
                     </div>
                     <div className="bg-gray-50 rounded-xl p-4">
-                      <div className="text-sm text-gray-600 mb-1">خزان الوقود</div>
-                      <div className="font-bold text-[#181b39]">{engines[selectedEngine].fuel}</div>
+                      <div className="text-sm text-gray-600 mb-1">{currentContent.specLabels.fuelTank}</div>
+                      <div className="font-bold text-[#181b39]">{currentContent.engines[selectedEngine].fuel}</div>
                     </div>
                   </motion.div>
 
@@ -443,17 +587,17 @@ export default function MidRangeEnginesPage() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4, duration: 0.5 }}
                   >
-                    <h4 className="text-xl font-bold text-[#181b39] mb-4">المميزات الرئيسية</h4>
+                    <h4 className="text-xl font-bold text-[#181b39] mb-4">{currentContent.keyFeatures}</h4>
                     <div className="space-y-3">
-                      {engines[selectedEngine].features.map((feature, index) => (
+                      {currentContent.engines[selectedEngine].features.map((feature, index) => (
                         <motion.div
                           key={index}
                           className="flex items-center"
-                          initial={{ opacity: 0, x: 20 }}
+                          initial={{ opacity: 0, x: isRTL ? -20 : 20 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: 0.5 + index * 0.1, duration: 0.3 }}
                         >
-                          <CheckCircleIcon className="w-5 h-5 text-green-500 ml-3" />
+                          <CheckCircleIcon className={`w-5 h-5 text-green-500 ${isRTL ? 'ml-3' : 'mr-3'}`} />
                           <span className="text-gray-700">{feature}</span>
                         </motion.div>
                       ))}
@@ -466,8 +610,8 @@ export default function MidRangeEnginesPage() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.6, duration: 0.5 }}
                   >
-                    <h4 className="text-lg font-bold text-[#181b39] mb-2">مثالي لـ:</h4>
-                    <p className="text-gray-700">{engines[selectedEngine].ideal}</p>
+                    <h4 className="text-lg font-bold text-[#181b39] mb-2">{currentContent.idealFor}</h4>
+                    <p className="text-gray-700">{currentContent.engines[selectedEngine].ideal}</p>
                   </motion.div>
 
                   <motion.div 
@@ -482,8 +626,8 @@ export default function MidRangeEnginesPage() {
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
-                      <PhoneIcon className="w-5 h-5 ml-2" />
-                      استفسر الآن
+                      <PhoneIcon className={`w-5 h-5 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                      {currentContent.inquireNow}
                     </motion.a>
                     <motion.a
                       href="/quote"
@@ -491,8 +635,8 @@ export default function MidRangeEnginesPage() {
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
-                      <TagIcon className="w-5 h-5 ml-2" />
-                      اطلب عرض سعر
+                      <TagIcon className={`w-5 h-5 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                      {currentContent.requestQuote}
                     </motion.a>
                   </motion.div>
                 </div>
@@ -508,7 +652,7 @@ export default function MidRangeEnginesPage() {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          dir="rtl"
+          dir={isRTL ? 'rtl' : 'ltr'}
         >
           <div className="absolute inset-0">
             {ctaParticles.map((particle, i) => (
@@ -516,7 +660,7 @@ export default function MidRangeEnginesPage() {
                 key={i}
                 className="absolute w-40 h-40 border border-white/10 rounded-full"
                 style={{
-                  right: `${particle.right}%`,
+                  [isRTL ? 'left' : 'right']: `${particle.right}%`,
                   top: `${particle.top}%`,
                 }}
                 animate={{
@@ -546,7 +690,7 @@ export default function MidRangeEnginesPage() {
                 variants={fadeInUp}
               >
                 <motion.div
-                  className="ml-4"
+                  className={isRTL ? "ml-4" : "mr-4"}
                   animate={{ 
                     scale: [1, 1.1, 1],
                   }}
@@ -555,7 +699,7 @@ export default function MidRangeEnginesPage() {
                   <PowerIcon className="w-16 h-16 text-[#c2b280]" />
                 </motion.div>
                 <h2 className="text-4xl md:text-6xl font-bold">
-                  القوة المثالية لمغامراتك
+                  {currentContent.ctaTitle}
                 </h2>
               </motion.div>
               
@@ -563,8 +707,7 @@ export default function MidRangeEnginesPage() {
                 className="text-xl md:text-2xl mb-12 leading-relaxed opacity-90"
                 variants={fadeInUp}
               >
-                اختر محركك المتوسط المثالي واستمتع بتوازن مثالي بين القوة والكفاءة.
-                فريق خبرائنا جاهز لإرشادك إلى الخيار الأنسب.
+                {currentContent.ctaDescription}
               </motion.p>
               
               <motion.div 
@@ -577,7 +720,7 @@ export default function MidRangeEnginesPage() {
                   {...scaleOnHover}
                 >
                   <motion.div
-                    className="mr-3"
+                    className={isRTL ? "ml-3" : "mr-3"}
                     animate={{ 
                       scale: [1, 1.1, 1],
                     }}
@@ -585,7 +728,7 @@ export default function MidRangeEnginesPage() {
                   >
                     <PhoneIcon className="w-6 h-6" />
                   </motion.div>
-                  استشر خبرائنا
+                  {currentContent.consultExperts}
                 </motion.a>
                 
                 <motion.a
@@ -594,15 +737,15 @@ export default function MidRangeEnginesPage() {
                   {...scaleOnHover}
                 >
                   <motion.div
-                    className="mr-3"
+                    className={isRTL ? "ml-3" : "mr-3"}
                     animate={{ 
-                      x: [0, 5, 0],
+                      x: isRTL ? [0, -5, 0] : [0, 5, 0],
                     }}
                     transition={{ duration: 2, repeat: Infinity }}
                   >
                     <ArrowRightIcon className="w-6 h-6" />
                   </motion.div>
-                  تصفح المحركات الأخرى
+                  {currentContent.browseOther}
                 </motion.a>
               </motion.div>
             </motion.div>
