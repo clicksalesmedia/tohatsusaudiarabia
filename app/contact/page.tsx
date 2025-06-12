@@ -166,8 +166,8 @@ export default function ContactPage() {
          {
            title: 'اتصل بنا مباشرة',
            description: 'للاستفسارات العاجلة والدعم الفوري',
-           info: '+966 56 650 1233',
-           action: 'tel:+966566501233',
+           info: '+966 54 369 9901',
+           action: 'tel:+966543699901',
            color: 'from-emerald-500 to-emerald-600',
            bgColor: 'from-emerald-50 to-teal-50'
          },
@@ -208,7 +208,7 @@ export default function ContactPage() {
              formPlaceholders: {
          fullName: 'أدخل اسمك الكامل',
          email: 'example@email.com',
-         phoneNumber: '+966 56 650 1233',
+         phoneNumber: '+966 54 369 9901',
          engineType: 'اختر نوع المحرك',
          message: 'اكتب رسالتك هنا...'
        },
@@ -224,21 +224,21 @@ export default function ContactPage() {
          {
            title: 'المبيعات والاستشارات',
            description: 'اختيار المحركات وعروض الأسعار',
-           phone: '+966 56 650 1233',
+           phone: '+966 54 369 9901',
            email: 'sales@tohatsuarabia.com',
            hours: 'الأحد - الخميس: 9:00 ص - 6:00 م'
          },
          {
            title: 'الصيانة والدعم التقني',
            description: 'خدمات الصيانة وحل المشاكل التقنية',
-           phone: '+966 56 650 1233',
+           phone: '+966 54 369 9901',
            email: 'support@tohatsuarabia.com',
            hours: 'الأحد - الخميس: 8:00 ص - 5:00 م'
          },
          {
            title: 'خدمة العملاء',
            description: 'الاستفسارات العامة والمساعدة',
-           phone: '+966 56 650 1233',
+           phone: '+966 54 369 9901',
            email: 'info@tohatsuarabia.com',
            hours: 'الأحد - الخميس: 9:00 ص - 5:00 م'
          }
@@ -290,8 +290,8 @@ export default function ContactPage() {
          {
            title: 'Call Us Directly',
            description: 'For urgent inquiries and immediate support',
-           info: '+966 56 650 1233',
-           action: 'tel:+966566501233',
+           info: '+966 54 369 9901',
+           action: 'tel:+966543699901',
            color: 'from-emerald-500 to-emerald-600',
            bgColor: 'from-emerald-50 to-teal-50'
          },
@@ -332,7 +332,7 @@ export default function ContactPage() {
              formPlaceholders: {
          fullName: 'Enter your full name',
          email: 'example@email.com',
-         phoneNumber: '+966 56 650 1233',
+         phoneNumber: '+966 54 369 9901',
          engineType: 'Select Engine Type',
          message: 'Write your message here...'
        },
@@ -348,21 +348,21 @@ export default function ContactPage() {
          {
            title: 'Sales & Consultations',
            description: 'Engine selection and price quotes',
-           phone: '+966 56 650 1233',
+           phone: '+966 54 369 9901',
            email: 'sales@tohatsuarabia.com',
            hours: 'Sunday - Thursday: 9:00 AM - 6:00 PM'
          },
          {
            title: 'Maintenance & Technical Support',
            description: 'Maintenance services and technical problem solving',
-           phone: '+966 56 650 1233',
+           phone: '+966 54 369 9901',
            email: 'support@tohatsuarabia.com',
            hours: 'Sunday - Thursday: 8:00 AM - 5:00 PM'
          },
          {
            title: 'Customer Service',
            description: 'General inquiries and assistance',
-           phone: '+966 56 650 1233',
+           phone: '+966 54 369 9901',
            email: 'info@tohatsuarabia.com',
            hours: 'Sunday - Thursday: 9:00 AM - 5:00 PM'
          }

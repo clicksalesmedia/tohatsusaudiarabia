@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 
 export default function WhatsAppButton() {
-  const whatsappNumber = "+966556676730"
+  const whatsappNumber = "+966543699901"
   const message = "مرحباً، أرغب في الاستفسار عن محركات توهاتسو البحرية"
   const whatsappUrl = `https://wa.me/${whatsappNumber.replace('+', '')}?text=${encodeURIComponent(message)}`
 

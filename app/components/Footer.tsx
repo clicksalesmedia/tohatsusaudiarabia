@@ -214,11 +214,11 @@ const Footer = () => {
               >
                 <PhoneIcon className={`w-4 h-4 text-[#C2B280] flex-shrink-0 ${isRTL ? 'ml-3' : 'mr-3'}`} />
                 <a 
-                  href="tel:+966566501233"
+                  href="tel:+966543699901"
                   className="text-gray-400 hover:text-[#C2B280] transition-colors duration-300"
                   dir="ltr"
                 >
-                  +966 56 650 1233
+                  +966 54 369 9901
                 </a>
               </motion.div>
 

@@ -191,8 +191,8 @@ const QuotePage = () => {
               <div className="bg-white rounded-2xl p-6 border-2 border-[#c2b280]">
                 <PhoneIcon className="w-8 h-8 text-[#c2b280] mx-auto mb-3" />
                 <h3 className="font-bold text-[#181b39] mb-2">للاستفسارات العاجلة</h3>
-                <a href="tel:+966122345678" className="text-[#c2b280] font-medium">
-                  +966 12 234 5678
+                <a href="tel:+966543699901" className="text-[#c2b280] font-medium">
+                  +966 54 369 9901
                 </a>
               </div>
               
@@ -373,7 +373,7 @@ const QuotePage = () => {
                         value={formData.phone}
                         onChange={(e) => handleInputChange('phone', e.target.value)}
                         className="w-full py-3 px-4 rounded-xl border-2 border-gray-200 focus:border-[#c2b280] focus:ring-2 focus:ring-[#c2b280]/20 transition-all duration-300"
-                        placeholder="+966 5X XXX XXXX"
+                        placeholder="+966 54 369 9901"
                       />
                     </div>
                     
@@ -800,8 +800,8 @@ const QuotePage = () => {
                   <PhoneIcon className="w-8 h-8 text-[#c2b280]" />
                 </motion.div>
                 <h3 className="text-xl font-bold mb-3">اتصل بنا</h3>
-                <a href="tel:+966122345678" className="text-[#c2b280] font-medium text-lg">
-                  +966 12 234 5678
+                <a href="tel:+966543699901" className="text-[#c2b280] font-medium text-lg">
+                  +966 54 369 9901
                 </a>
                 <p className="text-sm opacity-80 mt-2">السبت - الخميس: 8:00 ص - 6:00 م</p>
               </motion.div>

@@ -780,8 +780,8 @@ export default function FAQPage() {
                   <PhoneIcon className="w-8 h-8 text-[#c2b280]" />
                 </motion.div>
                 <h3 className="text-xl font-bold mb-3">{t.contact.call}</h3>
-                <a href="tel:+966566501233" className="text-[#c2b280] font-medium text-lg">
-                  +966 56 650 1233
+                <a href="tel:+966543699901" className="text-[#c2b280] font-medium text-lg">
+                  +966 54 369 9901
                 </a>
                 <p className="text-sm opacity-80 mt-2">{t.contact.callTime}</p>
               </motion.div>
@@ -799,8 +799,8 @@ export default function FAQPage() {
                   <ChatBubbleLeftRightIcon className="w-8 h-8 text-[#181b39]" />
                 </motion.div>
                 <h3 className="text-xl font-bold mb-3">{t.contact.whatsapp}</h3>
-                <a href="https://wa.me/966566501233" className="text-[#181b39] font-medium text-lg">
-                  +966 56 650 1233
+                                  <a href="https://wa.me/966543699901" className="text-[#181b39] font-medium text-lg">
+                  +966 54 369 9901
                 </a>
                 <p className="text-sm opacity-80 mt-2">{t.contact.whatsappTime}</p>
               </motion.div>

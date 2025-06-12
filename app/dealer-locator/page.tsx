@@ -64,7 +64,7 @@ export default function DealerLocatorPage() {
       city: 'jeddah',
       cityName: isRTL ? 'جدة' : 'Jeddah',
       address: isRTL ? 'شارع الأمير سلطان، حي الزهراء، جدة 23425، المملكة العربية السعودية' : 'Prince Sultan Street, Al-Zahra District, Jeddah 23425, Saudi Arabia',
-      phone: '+966 12 234 5678',
+      phone: '+966 54 369 9901',
       email: 'jeddah@tohatsu-sa.com',
       hours: t.dealerLocator.dealer.businessHours,
       services: t.dealerLocator.dealer.servicesList,
@@ -73,7 +73,7 @@ export default function DealerLocatorPage() {
       image: '/dealers/jeddah-showroom.jpg',
       isMainDealer: true,
       socialMedia: {
-        whatsapp: '+966 50 123 4567',
+        whatsapp: '+966 54 369 9901',
         instagram: '@tohatsu_jeddah'
       },
       certifications: t.dealerLocator.dealer.certificationsList
@@ -245,7 +245,7 @@ export default function DealerLocatorPage() {
                 <div className="mt-6 pt-6 border-t border-gray-200">
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <motion.a
-                      href="tel:+966122345678"
+                      href="tel:+966543699901"
                       className="bg-gradient-to-l from-[#c2b280] to-[#c2b280]/80 text-[#181b39] font-bold py-3 px-6 rounded-xl text-center transition-all duration-300 inline-flex items-center justify-center"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
@@ -624,7 +624,7 @@ export default function DealerLocatorPage() {
                 variants={fadeInUp}
               >
                 <motion.a
-                  href="tel:+966800123456"
+                                        href="tel:+966543699901"
                   className="bg-gradient-to-l from-[#c2b280] to-[#c2b280]/80 hover:from-[#c2b280]/90 hover:to-[#c2b280]/70 text-[#181b39] font-bold py-4 px-10 rounded-2xl text-xl transition-all duration-300 inline-flex items-center shadow-2xl"
                   {...scaleOnHover}
                 >
