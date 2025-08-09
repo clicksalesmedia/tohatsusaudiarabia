@@ -16,7 +16,6 @@ import {
   ChatBubbleLeftRightIcon,
   DocumentTextIcon,
   HeartIcon,
-  ArrowRightIcon,
   WrenchScrewdriverIcon,
   CogIcon
 } from '@heroicons/react/24/outline'
@@ -473,6 +472,40 @@ export default function ContactPage() {
                 {currentContent.heroDescription}
               </motion.p>
 
+              {/* Working hours schedule */}
+              <motion.div
+                className="max-w-xl mx-auto bg-white/80 text-[#181b39] rounded-2xl p-6 shadow-md border border-white/30 backdrop-blur-sm"
+                initial={{ y: 20, opacity: 0 }}
+                animate={isHeroInView ? { y: 0, opacity: 1 } : {}}
+                transition={{ delay: 0.3, duration: 0.7 }}
+              >
+                <h3 className="text-lg font-bold mb-4">{language === 'ar' ? 'ساعات العمل' : 'Working Hours'}</h3>
+                <div className="grid grid-cols-2 gap-y-2 text-sm">
+                  {(language === 'ar' ? [
+                    { day: 'السبت', time: '4–8 م' },
+                    { day: 'الأحد', time: '8 ص–12 م ، 4–8 م' },
+                    { day: 'الاثنين', time: '8 ص–12 م ، 4–8 م' },
+                    { day: 'الثلاثاء', time: '8 ص–12 م ، 4–8 م' },
+                    { day: 'الأربعاء', time: '8 ص–12 م ، 4–8 م' },
+                    { day: 'الخميس', time: '8 ص–12 م ، 4–8 م' },
+                    { day: 'الجمعة', time: 'مغلق' },
+                  ] : [
+                    { day: 'Saturday', time: '4–8 PM' },
+                    { day: 'Sunday', time: '8 AM–Noon, 4–8 PM' },
+                    { day: 'Monday', time: '8 AM–Noon, 4–8 PM' },
+                    { day: 'Tuesday', time: '8 AM–Noon, 4–8 PM' },
+                    { day: 'Wednesday', time: '8 AM–Noon, 4–8 PM' },
+                    { day: 'Thursday', time: '8 AM–Noon, 4–8 PM' },
+                    { day: 'Friday', time: 'Closed' },
+                  ]).map((row, i) => (
+                    <>
+                      <div key={`d-${i}`} className="font-semibold">{row.day}</div>
+                      <div key={`t-${i}`} className="opacity-80">{row.time}</div>
+                    </>
+                  ))}
+                </div>
+              </motion.div>
+ 
               <motion.div
                 className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-2xl mx-auto"
                 initial={{ y: 20, opacity: 0 }}
@@ -480,20 +513,40 @@ export default function ContactPage() {
                 transition={{ delay: 0.4, duration: 0.8 }}
               >
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-[#c2b280]">{currentContent.stats.happyCustomers}</div>
-                  <div className="text-sm opacity-80">{currentContent.statsLabels.happyCustomers}</div>
+                  <PhoneIcon className="w-12 h-12 text-[#c2b280] mb-4" />
+                  <p className="text-lg font-bold text-[#181b39]">
+                    {currentContent.contactMethods[0].info}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    {currentContent.contactMethods[0].description}
+                  </p>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-[#c2b280]">{currentContent.stats.supportAvailable}</div>
-                  <div className="text-sm opacity-80">{currentContent.statsLabels.supportAvailable}</div>
+                  <EnvelopeIcon className="w-12 h-12 text-[#c2b280] mb-4" />
+                  <p className="text-lg font-bold text-[#181b39]">
+                    {currentContent.contactMethods[1].info}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    {currentContent.contactMethods[1].description}
+                  </p>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-[#c2b280]">{currentContent.stats.yearsExperience}</div>
-                  <div className="text-sm opacity-80">{currentContent.statsLabels.yearsExperience}</div>
+                  <MapPinIcon className="w-12 h-12 text-[#c2b280] mb-4" />
+                  <p className="text-lg font-bold text-[#181b39]">
+                    {currentContent.contactMethods[2].info}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    {currentContent.contactMethods[2].description}
+                  </p>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-[#c2b280]">{currentContent.stats.serviceLocations}</div>
-                  <div className="text-sm opacity-80">{currentContent.statsLabels.serviceLocations}</div>
+                  <ChatBubbleLeftRightIcon className="w-12 h-12 text-[#c2b280] mb-4" />
+                  <p className="text-lg font-bold text-[#181b39]">
+                    {currentContent.contactMethods[3].info}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    {currentContent.contactMethods[3].description}
+                  </p>
                 </div>
               </motion.div>
             </motion.div>
@@ -882,11 +935,11 @@ export default function ContactPage() {
               viewport={{ once: true }}
             >
               <motion.a
-                href="#contact-form"
+                href="tel:+966543699901"
                 className="group bg-gradient-to-l from-[#c2b280] to-[#c2b280]/80 hover:from-[#c2b280]/90 hover:to-[#c2b280]/70 text-[#181b39] font-bold py-4 px-10 rounded-xl text-xl transition-all duration-300 inline-flex items-center shadow-lg"
                 {...scaleOnHover}
               >
-                <ArrowRightIcon className={`w-6 h-6 ${isRTL ? 'ml-3' : 'mr-3'}`} />
+                <PhoneIcon className={`w-6 h-6 ${isRTL ? 'ml-3' : 'mr-3'}`} />
                 <motion.div
                   animate={{ 
                     x: isRTL ? [-3, 0, -3] : [0, 3, 0],

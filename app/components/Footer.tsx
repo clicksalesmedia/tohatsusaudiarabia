@@ -149,8 +149,7 @@ const Footer = () => {
               {[
                 { name: t.links.about, href: "/about" },
                 { name: t.links.products, href: "/products" },
-                { name: t.links.blog, href: "/blog" },
-                { name: t.links.dealerLocator, href: "/dealer-locator" }
+                { name: t.links.blog, href: "/blog" }
               ].map((link, index) => (
                 <motion.li 
                   key={index}

@@ -13,12 +13,10 @@ import {
   GlobeAltIcon,
   TrophyIcon,
   BoltIcon,
-  MapIcon,
   SparklesIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
   CheckCircleIcon,
-  TruckIcon,
   PhoneIcon,
   EnvelopeIcon,
 } from '@heroicons/react/24/outline'
@@ -509,7 +507,7 @@ export default function HomePage() {
               transition={{ delay: 0.5, duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <p className="text-2xl text-[#181b39] font-bold italic bg-gradient-to-l from-[#c2b280] to-[#c2b280]/80 bg-clip-text text-transparent">
+              <p className="text-2xl font-bold italic bg-gradient-to-l from-[#c2b280] to-[#c2b280]/80 bg-clip-text text-transparent">
                 &ldquo;{t.whyTohatsu.quote}&rdquo;
               </p>
             </motion.div>
@@ -875,7 +873,7 @@ export default function HomePage() {
                   viewport={{ once: true }}
                 >
                   <motion.a
-                    href="/test-drive"
+                    href="/quote"
                     className="group bg-gradient-to-l from-[#c2b280] to-[#181b39] hover:from-[#c2b280]/90 hover:to-[#181b39]/90 text-white font-bold py-4 px-10 rounded-xl text-lg transition-all duration-300 inline-flex items-center shadow-lg relative overflow-hidden"
                     variants={fadeInUp}
                     whileHover={{ scale: 1.05 }}
@@ -889,7 +887,7 @@ export default function HomePage() {
                       }}
                       transition={{ duration: 2, repeat: Infinity }}
                     >
-                      <TruckIcon className="w-6 h-6" />
+                      <EnvelopeIcon className="w-6 h-6" />
                     </motion.div>
                                           <span className="relative z-10">{t.valueProps.testDrive}</span>
                   </motion.a>
@@ -978,22 +976,7 @@ export default function HomePage() {
               transition={{ delay: 0.4, duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <motion.a
-                href="/dealer-locator"
-                className="group bg-white/15 backdrop-blur-sm hover:bg-white/25 text-white font-bold py-4 px-8 rounded-xl text-lg transition-all duration-300 inline-flex items-center border border-white/20 shadow-lg"
-                {...scaleOnHover}
-              >
-                <motion.div
-                  className={`${isRTL ? 'mr-3' : 'ml-3'}`}
-                  animate={{ 
-                    scale: [1, 1.05, 1],
-                  }}
-                  transition={{ duration: 3, repeat: Infinity }}
-                >
-                  <MapIcon className="w-6 h-6" />
-                </motion.div>
-                                    {t.finalCta.findDealer}
-              </motion.a>
+              {/* Dealer locator button removed */}
               
               <motion.a
                 href="/quote"

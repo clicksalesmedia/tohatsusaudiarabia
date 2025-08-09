@@ -43,7 +43,6 @@ const Header = () => {
         { name: `${t.products.highPower.title} (${t.products.highPower.power})`, href: "/products/high-power-engines" }
       ]
     },
-    { name: t.nav.dealers, href: "/dealer-locator" },
     { name: t.nav.contact, href: "/contact" }
   ]
 

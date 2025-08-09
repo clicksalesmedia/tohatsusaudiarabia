@@ -5,7 +5,7 @@ export const translations = {
       home: 'الرئيسية',
       about: 'عن توهاتسو',
       products: 'المنتجات',
-      dealers: 'موقع الوكلاء',
+      // dealers: 'موقع الوكلاء',
       contact: 'اتصل بنا',
       quote: 'طلب عرض سعر',
       faq: 'الأسئلة الشائعة'
@@ -160,15 +160,15 @@ export const translations = {
         ]
       },
       ctaTitle: 'جرب الفرق بنفسك',
-      ctaSubtitle: 'احجز اختبار قيادة مجاني أو استشارة مع خبرائنا لتكتشف لماذا يختار المحترفون توهاتسو',
-      testDrive: 'احجز اختبار قيادة مجاني',
+      ctaSubtitle: 'اطلب عرض سعر أو استشارة مع خبرائنا لتكتشف لماذا يختار المحترفون توهاتسو',
+      testDrive: 'اطلب عرض سعر',
       talkExpert: 'تحدث مع خبير'
     },
     // Final CTA
     finalCta: {
       title: 'هل أنت مستعد للانطلاق؟',
       subtitle: 'سواء كنت تبحث عن محرك جديد، تحتاج إلى صيانة، أو ترغب في معرفة المزيد، نحن هنا لمساعدتك في كل خطوة من رحلتك البحرية.',
-      findDealer: 'ابحث عن وكيل',
+      // findDealer: 'ابحث عن وكيل',
       getQuote: 'اطلب عرض سعر'
     },
     // About page
@@ -357,7 +357,7 @@ export const translations = {
       home: 'Home',
       about: 'About Tohatsu',
       products: 'Products',
-      dealers: 'Dealer Locator',
+      // dealers: 'Dealer Locator',
       contact: 'Contact Us',
       quote: 'Get Quote',
       faq: 'FAQ'
@@ -512,15 +512,15 @@ export const translations = {
         ]
       },
       ctaTitle: 'Experience the Difference Yourself',
-      ctaSubtitle: 'Book a free test drive or consultation with our experts to discover why professionals choose Tohatsu',
-      testDrive: 'Book Free Test Drive',
+      ctaSubtitle: 'Request a quote or consultation with our experts to discover why professionals choose Tohatsu',
+      testDrive: 'Request a Quote',
       talkExpert: 'Talk to an Expert'
     },
     // Final CTA
     finalCta: {
       title: 'Are You Ready to Set Sail?',
       subtitle: 'Whether you\'re looking for a new engine, need maintenance, or want to learn more, we\'re here to help you every step of your marine journey.',
-      findDealer: 'Find a Dealer',
+      // findDealer: 'Find a Dealer',
       getQuote: 'Get Quote'
     },
     // About page
