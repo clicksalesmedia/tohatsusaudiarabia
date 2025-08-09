@@ -1,0 +1,61 @@
+// Prisma schema for Neon PostgreSQL
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Contact {
+  id         String   @id @default(cuid())
+  name       String
+  email      String
+  phone      String?  @db.VarChar(100)
+  engineType String?  @db.VarChar(100)
+  message    String
+  createdAt  DateTime @default(now())
+
+  @@index([email])
+  @@index([createdAt])
+}
+
+model QuoteLead {
+  id                     String   @id @default(cuid())
+  // Personal Information
+  fullName               String
+  phone                  String
+  email                  String
+  city                   String
+
+  // Engine Requirements
+  engineType             String
+  powerRange             String
+  usage                  String
+  engineCount            String
+
+  // Vessel Information
+  vesselType             String
+  vesselLength           String?
+  vesselYear             String?
+  currentEngine          String?
+
+  // Project Details
+  timeline               String
+  budget                 String?
+  priority               String
+
+  // Additional Information
+  additionalRequirements String?
+  previousExperience     String?
+  preferredContact       String
+
+  createdAt              DateTime @default(now())
+
+  @@index([email])
+  @@index([phone])
+  @@index([createdAt])
+}
+
+

@@ -94,14 +94,16 @@ const QuotePage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    
     try {
-      // Simulate form submission
-      await new Promise(resolve => setTimeout(resolve, 2000))
+      const res = await fetch('/api/quote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+      if (!res.ok) throw new Error('Request failed')
       setSubmitStatus('success')
-    } catch {
-      // Error handling without unused parameter
-      console.error('Form submission failed')
+    } catch (err) {
+      console.error('Form submission failed', err)
       setSubmitStatus('error')
     } finally {
       setIsSubmitting(false)

@@ -130,10 +130,28 @@ export default function ContactPage() {
   // Use consistent particle positions to prevent hydration errors
   const heroParticles = useParticles(10, 'contact-hero')
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [submitted, setSubmitted] = useState<'idle'|'success'|'error'>('idle')
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle form submission here
-    console.log('Form submitted:', formData)
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          engineType: formData.engineType,
+          message: formData.message,
+        }),
+      })
+      if (!res.ok) throw new Error('Request failed')
+      setSubmitted('success')
+      setFormData({ name: '', email: '', phone: '', engineType: '', message: '' })
+    } catch {
+      setSubmitted('error')
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
